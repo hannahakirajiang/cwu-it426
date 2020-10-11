@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Getting input</title>
+<style type="text/css">
+body {
+    text-align: center;
+}
+</style>
+</head>
+
+<body>
+<div id="title"><h2>Miles to Kilometers and back</h2></div><br>
+<p>Please enter a number below and click dropdowns to convert!</p>
+<div id="converter">
+<input id="input" type="text" placeholder="Enter a number"><br>
+<br><div id="controls">
+	<select name = "dropConvert" id="dropConvert" onchange="GetSelectedTextValue(this)">
+		<option value="">Choose a conversion</option>
+		<option value="1">Mile(s) to Kilometer(s)</option>
+		<option value="2">Kilometer(s) to Mile(s)</option>
+
+	</select>
+	</div><br>
+
+<div id="output"></div>
+</div><br>
+<div id="footer"><h4>Made with ❤ by Hannah</h4></div>
+	
+	
+<script type="text/javascript">
+
+//set up variables
+var userInput = 0 ;
+var myinput = document.getElementById("input");
+var myoutput = document.querySelector("#output");
+
+/*
+function validateInput()
+	{
+		userInput = parseInt(myinput.value);
+		if(isNaN(userInput))
+			{
+				alert(!!!);
+				output.innerHTML="Please enter a number."
+			}
+		else if
+			{
+				GetSelectedTextValue(dropConvert);
+			}
+	}
+	*/
+	
+//caculation
+function GetSelectedTextValue(dropConvert) {
+        var selectedText = dropConvert.options[dropConvert.selectedIndex].innerHTML;
+        var selectedValue = dropConvert.value;
+		userInput = parseInt(myinput.value);
+	
+	if(isNaN(userInput))
+
+			{
+
+				output.innerHTML="Please enter a valid number.";
+
+			}
+	else if (selectedValue == "1")
+	{	
+		//validateInput();
+		userInput = parseInt(myinput.value);
+		KM = userInput*1.609344
+		myoutput.innerHTML = userInput + " Mile(s) is "+ KM.toFixed(2)+ " Kilometer(s)";
+	}
+
+	else if (selectedValue == "2")
+	{
+		//validateInput();
+		userInput = parseInt(myinput.value);
+		M = userInput*.62137119
+		myoutput.innerHTML = userInput + " Kilometer(s) is "+M.toFixed(2)+ " Mile(s)";
+	}
+    } 
+	
+// store five arrays
+	
+	
+	
+	
+	
+</script>
+</body>
+</html>

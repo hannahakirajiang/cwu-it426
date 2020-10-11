@@ -1,0 +1,256 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Math Game</title>
+<style type="text/css">
+	#wrapper{
+		width: 80%;
+		margin-right: auto;
+		margin-left: auto;
+	}
+#CorrectPics {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+#WrongPics {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    text-align: center;
+    margin-top: -210px;
+}
+#numberplz {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    text-align: center;
+    margin-top: -230px;
+}
+	#title{
+    text-align: center;
+    font-size: 100px;
+    padding-top: 12px;
+    padding-bottom: 14px;
+    font-family: cabin-sketch;
+    font-style: normal;
+    font-weight: 700;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: rgba(200,230,255,0.83);
+    margin-bottom: 3%;
+	}
+	#problem{
+    background-color: bisque;
+	}
+body {
+    background-image: url(img/bg.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+	#answer{
+    text-align: center;
+    clear: left;
+    font-size: xx-large;
+    background-color: rgba(200,230,255,0.57);
+    background-image: url(url);
+	}
+.Enter {
+}
+	#displayNumber1{
+    width: 40%;
+    float: left;
+    text-align: center;
+    font-size: 150px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    background-size: contain;
+    background-clip: border-box;
+    background-image: url(url);
+    background-color: rgba(235,249,203,1.00);
+    font-family: cabin-sketch;
+    font-style: normal;
+    font-weight: 700;
+    margin-bottom: 3%;
+	}
+	#displayNumber2{
+    width: 40%;
+    background-color: mistyrose;
+    float: left;
+    text-align: center;
+    font-size: 150px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    font-family: cabin-sketch;
+    font-style: normal;
+    font-weight: 700;
+    margin-bottom: 3%;
+	}
+	#symbol{
+    width: 20%;
+    float: left;
+    text-align: center;
+    font-size: 90px;
+    font-family: cabin-sketch;
+    font-style: normal;
+    margin: auto;
+    font-weight: 700;
+    padding-left: auto;
+    padding-right: autp;
+    line-height: 100%;
+    padding-bottom: 45px;
+    padding-top: 45px;
+	}
+	#inputAnswer{
+    font-size: xx-large;
+    text-align: center;
+	}
+
+#results{
+		padding-top: 10px;
+		padding-bottom: 10px;
+		font-size: xx-large;
+		text-align: center;
+	}
+#Enter {
+    font-size: xx-large;
+	padding-bottom: 10px;
+}
+</style>
+<!--The following script tag downloads a font from the Adobe Edge Web Fonts server for use within the web page. We recommend that you do not modify it.--><script>var __adobewebfontsappname__="dreamweaver"</script><script src="http://use.edgefonts.net/cabin-sketch:n4,n7:default.js" type="text/javascript"></script>
+</head>
+
+<body>
+	<div id="wrapper">
+	<div id="title">The Math Game</div>
+	<div id="problem">
+		<div id="numberwrapper">
+		<div id="displayNumber1">5</div>
+		<div id="symbol">+</div>
+		<div id="displayNumber2">3</div>
+		</div>
+	</div>
+	<div id="answer">
+		<label for="inputAnswer">Your Answer:</label>
+		<input type="text" name="inputAnswer" id="inputAnswer" autocomplete="off" autofocus>
+		<input type="button" name="Enter" id="Enter" value="Check!">
+	</div>
+		<div id="results"></div>
+			<div id="CorrectPics"><img src="img/Right.png" width="250" height="250" alt="Yes"/></div>
+		<div id="WrongPics"><img src="img/Wrong.png" width="180" height="180" alt="No"/></div>
+		<div id="numberplz"><img src="img/nb.png" width="250" height="250" alt="number plz"/></div>
+
+	</div>
+
+<script type="text/javascript">
+	var firstNumber = 0;
+	var secondNumber = 0;
+	var myAnswer = 0;
+	var correctAnswer= 0;
+	var mathwords = "";
+	
+	var displayOne = document.getElementById("displayNumber1");
+	var displayTwo = document.getElementById("displayNumber2");
+	var thebutton = document.getElementById("Enter");
+	var theAnswer = document.getElementById("inputAnswer");
+	var theResults = document.getElementById("results");
+	var theSymbol = document.getElementById("symbol");
+	
+	thebutton.addEventListener("click",checkAnswer,false);
+	generateProblem();
+	CorrectPics.style.visibility="hidden";
+	WrongPics.style.visibility="hidden";
+	numberplz.style.visibility="hidden";
+	
+	//w3svhool - enter
+	theAnswer.addEventListener("keyup", function(event) {
+	  if (event.keyCode === 13) {
+	   event.preventDefault();
+	   document.getElementById("Enter").click();
+	  }
+	});
+	
+	function generateProblem(){
+		firstNumber=Math.floor(Math.random()*10);
+		//displayOne.innerHTML=firstNumber;
+		secondNumber=Math.floor(Math.random()*10);
+		//displayTwo.innerHTML=secondNumber;
+		getOperation();
+	}
+	
+	//这里有问题得改，目前四个case在you got it 提示下面都是“plus”，得根据每个case不同来改符号，可不可以写成if case 1之类的。而且，减法和除法得把第一个数改成"firstnumber + secondnumber"。
+	function checkAnswer(){
+		//correctAnswer = firstNumber + secondNumber;
+		myAnswer = parseInt(theAnswer.value);
+		if (myAnswer == correctAnswer){
+			
+			theResults.innerHTML="You got it!<br>"+mathwords+" does equal to "+myAnswer+"!!";
+			theAnswer.value = "";
+			generateProblem();
+			WrongPics.style.visibility="hidden";
+			CorrectPics.style.visibility="visible";
+			numberplz.style.visibility="hidden";
+			
+		}
+		else if(isNaN(myAnswer))
+			{
+				theResults.innerHTML="Try again!<br>Please enter a number!"
+				theAnswer.value="";
+				CorrectPics.style.visibility="hidden";
+				WrongPics.style.visibility="hidden";
+				numberplz.style.visibility="visible";
+			}
+		
+		else{
+		
+			theResults.innerHTML="Try again!<br>"+mathwords+" does not equal to "+myAnswer+"!";
+			theAnswer.value="";
+			CorrectPics.style.visibility="hidden";
+			WrongPics.style.visibility="visible";
+			numberplz.style.visibility="hidden";
+			
+		}
+	}
+		function getOperation(){
+		var operation = Math.ceil(Math.random()*4);
+		
+		switch(operation){
+			case 1:
+				displayOne.innerHTML=firstNumber;
+				displayTwo.innerHTML=secondNumber;
+				correctAnswer= firstNumber+secondNumber;
+				theSymbol.innerHTML="+";
+				mathwords = firstNumber+" + "+secondNumber;
+				break;
+			case 2:
+				displayOne.innerHTML=firstNumber+secondNumber;
+				displayTwo.innerHTML=secondNumber;
+				correctAnswer= firstNumber;
+				theSymbol.innerHTML="-";
+				mathwords=firstNumber+secondNumber+" - "+secondNumber;
+				break;
+			case 3:
+				displayOne.innerHTML=firstNumber;
+				displayTwo.innerHTML=secondNumber;
+				correctAnswer= firstNumber*secondNumber;
+				theSymbol.innerHTML="*";
+				mathwords=firstNumber+" * "+secondNumber;
+				break;
+			case 4:
+				if(secondNumber==0){
+					secondNumber = Math.ceil(Math.random()*8)+1;
+				}
+				displayOne.innerHTML=firstNumber*secondNumber;
+				displayTwo.innerHTML=secondNumber;
+				correctAnswer= firstNumber;
+				theSymbol.innerHTML="/";
+				mathwords=firstNumber*secondNumber+" / "+secondNumber;
+				break;
+		}
+	}
+	</script>
+	
+</body>
+</html>

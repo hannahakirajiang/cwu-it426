@@ -1,0 +1,581 @@
+<!doctype html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+
+.tabs {
+	width: 20%;
+	float:left;
+	
+}
+.tabtitle {
+	background-color: #D3D6F5;
+	width: 20%;
+	float: left;
+	font-weight: bold;
+}
+	
+	body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+#currentInventory {
+    padding-left: px;
+    padding-top: 138px;
+    padding-bottom: 10px;
+    width: 100%;
+    float: left;
+}
+	#inventoryTitle {
+	padding-top: 15px;
+	padding-bottom: 15px;
+	padding-left: 10px;
+}
+.topText {
+    background-color: #726CF7;
+    padding: 40px;
+    text-align: center;
+}
+.header, .footer {
+    padding: 10px 16px;
+    background: #3F42F7;
+    color: #FFF;
+}
+.content {
+    margin-top: 260px;
+}
+#topWrapper {
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+#fixedFooter {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+.sidebar .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+.sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: white;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+#sidebarText {
+    width: 100%;
+    overflow: hidden;
+}
+	
+</style>
+</head>
+<body>
+<div id="topWrapper">
+  <div class="topText">
+    <h1>Project Requestor</h1>
+    <p>Request a project from me now</p>
+  </div>
+  <div class="header" id="theHeader">
+<div id="addPet">
+<h3>Request a project:</h3>
+  <div id="inputs"><form id="inputForm">
+    <p>
+      <label>Category:
+        </label>
+      <select id="dropType">
+        <option value="00001">Select Code</option>
+        <option value="09874">Development</option>
+        <option value="09875">Design</option>
+        <option value="09899">Management</option>
+        <option value="09999">09999 Other</option>
+      </select>
+		<label> 
+		  Project Type: </label>
+	   <select id="dropAction" onChange="theFinder()">
+		   <option value="1">Code Ur Site</option>
+		   <option value="2">Wordpress Dev</option>
+		</select>
+      <label>
+        <br>
+        Start Date: </label>
+	  <input name="inputTimeDate" type="date" id="inputTimeDate" disabled>
+      <input name="inputTime" type="time" id="inputTime" disabled>
+      <label>Due Date:
+        </label>
+		<input name="inputQuantityDate" type="date" id="inputQuantityDate" disabled>
+      <input name="inputQuantity" type="time" id="inputQuantity" disabled>
+      </p>
+    <p>
+      <input type="button" name="button" id="button" value="Submit" onClick="getFromForm()">
+    </p>
+  </form>
+</div>
+</div>
+  </div>
+</div>
+
+	
+
+ <div id="currentInventory" class="content">
+	  <h3>Here is your project.</h3>
+<div id="sortButtons">Sort by?
+<input name="Code" type="button" id="Code" title="Code" value="Code" onClick="codeSort()">
+<input name="Time" type="button" id="Time" title="Time" value="Time in" onClick="timeSort()">
+<input name="Amount" type="button" id="Amount" title="Amount" value="Time out" onClick="amountSort()">
+<input name="Hours" type="button" id="Hours" title="Hours" value="Hours" onClick="hoursSort()"><br><br>
+<div id="inventoryTitle"></div>
+<div id="answer"></div>
+</div>
+<div class="clearIt"></div>
+</div>
+</div>
+	
+	
+	
+	
+<div id="fixedFooter" class="footer"> <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;Charts</span> </div>
+<div id="chartDisplay" class="sidebar"> <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <div id="sidebarText">
+    <h2>And the charts go here??</h2>
+	 <div id="chart_div" class="charts">1</div>
+	<div id="chart_div2" class="charts">2</div>
+  </div>
+</div>
+<script>
+function openNav() {
+  document.getElementById("chartDisplay").style.width = "100%";
+}
+
+function closeNav() {
+  document.getElementById("chartDisplay").style.width = "0";
+}
+</script>
+	
+	
+<!--Load in scripts to add in date/time features and parsing-->
+<script src="../date.js"></script>
+<script src="../date-en-US.js"></script>
+<script src="../core.js"></script>
+<script src="../parser.js"></script>
+	
+<script>
+const TWOWEEKSECS = 1209600;
+// declare variables
+// answer is the div that holds the list
+var a = document.getElementById("answer");
+// pets is the array that hold all of the information
+var pets = [];
+// selectType sets the Type in the form
+var selectType = document.getElementById('dropType');
+// breedText holds the breed input
+var timeText = document.getElementById('inputTime');
+// amountText holds the quantity input
+var amountText = document.getElementById('inputQuantity');
+// sortBy holds the current sort for use in displaylist
+var sortBy = "Code";
+var formTime = "";
+var dateTime = "";
+var hoursWorked = "";
+// iTitle is used to change the title of the inventory list
+iTitle=document.getElementById('inventoryTitle');
+// set the default title for the inventory list
+iTitle.innerHTML="Current Time Logs:";
+var theSel = document.getElementById("dropAction");
+var userC = 1;
+var deletThis = 0;
+	
+function theFinder(){
+	userC = theSel.options[theSel.selectedIndex].value;	
+	var timeTime = document.getElementById("inputTime");
+	var timeDate = document.getElementById("inputTimeDate");
+	var amountTime = document.getElementById("inputQuantity");
+	var amountDate = document.getElementById("inputQuantityDate");
+	if (userC == 1){
+		timeTime.disabled = true;
+		timeDate.disabled = true;
+		amountTime.disabled = true;
+		amountDate.disabled = true;
+		return userC;
+	}
+	else if(userC ==2){
+		timeTime.disabled = false;
+		timeDate.disabled = false;
+		amountTime.disabled = false;
+		amountDate.disabled = false;
+		return userC;
+	}
+}
+// Main Pet constructor
+function Pet(type, time, amount, date1, hours) {	
+	this.type = type;
+	this.time = time;
+	this.amount = amount;
+	this.date1 = date1;
+	this.hours = hours;
+}
+
+// Read the form into the array
+function getFromForm(){ 
+//userC = theSel.options[theSel.selectedIndex].value;	
+//if (userC==1){
+//	
+//}
+//else{
+//	
+//}
+var timeTime = document.getElementById("inputTime");
+var timeDate = document.getElementById("inputTimeDate");
+var amountTime = document.getElementById("inputQuantity");
+var amountDate = document.getElementById("inputQuantityDate");
+var formType = dropType.value;
+// get the breed and convert the first letter to an upper case letter
+formTime=timeText.value;
+// get the quantity and covert it to a number so the sort will work correctly
+var formAmount = amountText.value;
+// check to see if the breed already exists, if it does erase it!	
+if (formType == 00001){
+	alert("Please choose a job code");
+	return;
+}
+//else if (isNaN(timeTime)||isNaN(timeDate)||isNaN(amountTime)||isNaN(amountDate)){
+//	alert ("Please enter a valid time");
+//	return;
+//}
+if (userC == 1){
+formTime= Math.floor(new Date().getTime()/1000);
+dateTime = timeConvert(formTime);
+formAmount= "Click button on right to clock out and record hours";
+hoursWorked = "Pending";
+} else if(userC ==2){
+var intTime = timeDate.value +' '+ timeTime.value;
+var intTime2 = Math.floor(Date.parse(intTime).getTime()/1000);
+dateTime = timeConvert(intTime2);
+formTime= intTime2;
+var localFormTime = amountDate.value + ' '+ amountTime.value;
+var localFormTime2 = Math.floor(Date.parse(localFormTime).getTime()/1000);
+var checkEr = Math.floor(new Date().getTime()/1000);
+var cutOff = checkEr-TWOWEEKSECS;
+var checkOff = checkEr - intTime2;
+var checkOff2 = checkEr - localFormTime2;
+if (checkOff < 0 || checkOff2 < 0){
+	alert("Please check your input dates. You input a time that's in the future.");
+	return;
+}
+if (checkOff > TWOWEEKSECS || checkOff2 > TWOWEEKSECS){
+	alert("You can't record hours from over two weeks ago. Contact Payroll for more information.");
+	return;
+}
+var calcHours = ((localFormTime2 - intTime2)/60)/60;
+if (calcHours < 0){
+	alert("Please confirm your Start Time. It appears that your start time happens after your inputed end time.");
+	return;
+}
+
+hoursWorked = calcHours.toFixed(2);
+formAmount = timeConvert(localFormTime2);
+}
+for (var i=0; i<pets.length; i++)
+	{
+		if((pets[i].time== formTime) && (pets[i].type == formType))
+		{
+			pets.splice(i,1);
+		}
+	}
+// if the amount is not 0, then add the breed into the array
+if (formAmount !=0)
+{
+	var newPet = new Pet(formType,formTime,formAmount,dateTime, hoursWorked);
+	pets.push(newPet);
+	// resort the array by Type
+	pets.sort(sortByCode);
+}
+// clear the form	
+selectType.options[0].selected = true;
+timeText.value = "";
+amountText.value = "";
+// display the current inventory
+displayList();
+drawChart();
+drawChart2();
+}
+
+function codeSort(){
+	sortBy="Code";
+	iTitle.innerHTML="Current Time Logs sorted by Code:"
+	pets.sort(sortByTime);
+	pets.sort(sortByCode);
+	displayList();
+}
+function timeSort(){
+	sortBy="Time";
+	iTitle.innerHTML="Current Time Logs sorted by Time in:"
+	pets.sort(sortByCode);
+	pets.sort(sortByTime);	
+	displayList();
+}
+function amountSort(){
+	sortBy="Amount";
+	iTitle.innerHTML="Current Time Logs sorted by Time Out:"
+	pets.sort(sortByAmount);	
+	displayList();
+}
+function hoursSort(){
+	sortBy="Hours";
+	iTitle.innerHTML="Current Time Logs sorted by Hours:"
+	pets.sort(sortByHours);
+	displayList();
+}
+
+// sort by type
+function sortByCode(pet1, pet2) {
+	if(pet1.type > pet2.type) { return 1;}
+	else if (pet1.type === pet2.type){ return 0;}
+	else { return -1;}
+}
+// sort by breed
+function sortByTime(pet1, pet2) {
+	if(pet1.time > pet2.time) { return 1;}
+	else if (pet1.time === pet2.time){ return 0;}
+	else { return -1;}
+}
+// sort by quantity
+function sortByAmount(pet1, pet2) {
+	if(pet1.amount > pet2.amount) { return 1;}
+	else if (pet1.amount === pet2.amount){ return 0;}
+	else { return -1;}
+}
+
+function sortByHours(pet1, pet2) {
+	if(pet1.hours > pet2.hours) { return 1;}
+	else if (pet1.hours === pet2.hours){ return 0;}
+	else { return -1;}
+}
+	
+function deleteItem(value){
+	var that = value;
+	pets.splice(that,1);
+	displayList();
+	drawChart();
+	drawChart2();
+}	
+function clockOut(value){
+	var tham = value;
+	var inTime = pets[tham].time;
+	var outTime = Math.floor(new Date().getTime()/1000);
+	var theEndTime = timeConvert(outTime);
+	var difference = outTime - inTime;
+	var calcTheHours = (difference/60)/60;
+	pets[tham].hours = calcTheHours.toFixed(2);
+	pets[tham].amount = theEndTime;
+	displayList();
+}
+function timeConvert(dateTimes){
+	var localTime = new Date(parseInt(dateTimes *1000));
+	var month = new Array();
+		month[0] = "January";
+		month[1] = "February";
+		month[2] = "March";
+		month[3] = "April";
+		month[4] = "May";
+		month[5] = "June";
+		month[6] = "July";
+		month[7] = "August";
+		month[8] = "September";
+		month[9] = "October";
+		month[10] = "November";
+		month[11] = "December";
+	var localYear = localTime.getFullYear();
+	var localMonth = month[localTime.getMonth()];
+	var localDay = localTime.getDate();
+	var localHour = localTime.getHours();
+	var localMinutes = localTime.getMinutes();
+	var localSeconds = localTime.getSeconds();
+	var amPm = (localHour > 11? "PM":"AM");
+	var actualHour = (localHour > 12? localHour-12:localHour);
+	var actualMinutes = (localMinutes >9? localMinutes: "0"+localMinutes)
+	var actualSeconds = (localSeconds >9? localSeconds : "0"+localSeconds)
+	var timeStamp = localMonth+" "+localDay+" ,"+localYear+". "+actualHour+":"+actualMinutes+":"+actualSeconds+" "+amPm;
+	return timeStamp;
+	
+}
+function displayList(){
+	drawChart();
+	drawChart2();
+	a.innerHTML="";
+	switch (sortBy){
+		case "Code":
+		a.innerHTML +='<div class=tabtitle>Code</div><div class=tabtitle>Clock-In</div><div class=tabtitle>Clock-Out</div><div class=tabtitle>Hours</div><div class=clearIt><br>';
+		break;
+		case "Time":
+		a.innerHTML +='<div class=tabtitle>Clock-in</div><div class=tabtitle>Code</div><div class=tabtitle>Clock-Out</div><div class=tabtitle>Hours</div><div class=clearIt><br>';
+		break;
+		case "Amount":
+		a.innerHTML +='<div class=tabtitle>Clock-Out</div><div class=tabtitle>Clock-in</div><div class=tabtitle>Code</div><div class=tabtitle>Hours</div><div class=clearIt><br>';
+		break;
+		case "Hours":
+		a.innerHTML +='<div class=tabtitle>Hours</div><div class=tabtitle>Code</div><div class=tabtitle>Clock-in</div><div class=tabtitle>Clock-Out</div><div class=clearIt><br>';
+		break;
+	}
+	for (var i=0; i<pets.length; i++){
+	deletThis = i;
+	var onOrOff = "";
+	var checkIt = "";
+	var checkThat = pets[i].amount;
+	theLocName = 'clock'+deletThis;
+	
+	switch (sortBy){
+		case "Code":
+	a.innerHTML +='<div class=tabs>'+pets[i].type +'</div><div class=tabs>'+pets[i].date1 +'</div><div class=tabs>'+''+pets[i].amount +'</div><div class=tabs>'+pets[i].hours+'</div><button type="button" value='+deletThis+' onclick="clockOut(this.value)" >Clock Out</button><button type="button" value='+deletThis+' onclick="deleteItem(this.value)" >Delete</button><div class=clearIt>';
+
+	break;
+		case "Time":
+		a.innerHTML +='<div class=tabs>'+pets[i].date1 +'</div><div class=tabs>'+pets[i].type +'</div><div class=tabs>'+''+pets[i].amount +'</div><div class=tabs>'+pets[i].hours+'</div><button type="button" value='+deletThis+' onclick="clockOut(this.value)" >Clock Out</button><button type="button" value='+deletThis+' onclick="deleteItem(this.value)">Delete</button><div class=clearIt>';
+		
+
+		
+		break;
+		
+		case "Amount":
+		a.innerHTML +='<div class=tabs>'+''+pets[i].amount +'</div><div class=tabs>'+pets[i].date1 +'</div><div class=tabs>'+pets[i].type +'</div><div class=tabs>'+pets[i].hours+'</div><button type="button" value='+deletThis+' onclick="clockOut(this.value)" >Clock Out</button><button type="button" value='+deletThis+' onclick="deleteItem(this.value)">Delete</button><div class=clearIt>';
+
+		break;
+			
+		case "Hours":
+		a.innerHTML +='<div class=tabs>'+pets[i].hours+'</div><div class=tabs>'+pets[i].type +'</div>'+'<div class=tabs>'+pets[i].date1 +'</div><div class=tabs>'+pets[i].amount +'</div><button type="button" value='+deletThis+' onclick="clockOut(this.value)" >Clock Out</button><button type="button" value='+deletThis+' onclick="deleteItem(this.value)">Delete</button><div class=clearIt>';
+
+		break;
+	}
+}
+}
+
+
+
+</script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+google.charts.load('current',{packages:['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+google.charts.setOnLoadCallback(drawChart2);
+		var theString = "";
+//		theString = "[['Regular Hours',"+parseInt(regHour)+"],"+
+//			"['Weekend Hours',"+parseInt(wkndHour)+"],"+
+//			"['Project Hours',"+parseInt(projectHour)+"],"+
+//			"['Other Hours',"+parseInt(otherHour)+"],";
+//		theString = theString.substring(0,3)+"]";
+		function drawChart(){
+			var regHour = 0;
+			var wkndHour = 0;
+			var projectHour = 0;
+			var otherHour = 0;
+			for (var i=0; i<pets.length; i++){
+			var hours = parseFloat(pets[i].hours);
+			if (isNaN(hours)){
+				hours = 0;
+			}
+			if (pets[i].type == "09874"){
+				regHour = regHour + hours;
+			}else if (pets[i].type == "09875"){
+				wkndHour = wkndHour + hours;
+			}else if(pets[i].type == "09899"){
+				projectHour = projectHour + hours;
+			}else {
+				otherHour = otherHour + hours;
+			}
+			
+		}
+			var data = new google.visualization.arrayToDataTable([
+			['Code','Hours Worked'],
+			['Regular Hours', regHour],
+			['Weekend Hours', wkndHour],
+			['Project Hours', projectHour],
+			['Other Hours', otherHour]
+			]);		
+//			data.addColumn('string', 'Hours by Code');
+//			data.addColumn('number', 'Hours worked:');
+//			data.addRows(eval(theString));
+			var options = {'title':'Hours by Code Designation',
+						  'width':450,
+						  'height':400,};
+			var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+			chart.draw(data,options);
+		}
+		function drawChart2(){
+			var regHour1 = 0;
+			var wkndHour1 = 0;
+			var projectHour1 = 0;
+			var otherHour1 = 0;
+			var rTick = 0;
+			var wTick = 0;
+			var pTick = 0;
+			var oTick = 0;
+			var aRHours = 0;
+			var aWHours = 0;
+			var aPHours = 0;
+			var aOHours = 0;
+		for (var i=0; i<pets.length; i++){
+			var hours2 = parseFloat(pets[i].hours);
+			if (isNaN(hours2)){
+				hours2 = 0;
+			}
+			if (pets[i].type == "09874"){
+				rTick++;
+				regHour1 = parseFloat(regHour1 + hours2);
+			}else if (pets[i].type == "09875"){
+				wTick++;
+				wkndHour1 = parseFloat(wkndHour1 + hours2);
+			}else if(pets[i].type == "09899"){
+				pTick++;
+				projectHour1 = parseFloat(projectHour1 + hours2);
+			}else {
+				oTick++;
+				otherHour1 = parseFloat(otherHour1 + hours2);
+			}
+		}
+			if(rTick >0){
+			aRHours = (regHour1/rTick).toFixed(4);
+			aRHours = parseFloat(aRHours);
+			}
+			if(wTick >0){
+			aWHours = (wkndHour1/wTick).toFixed(4);
+			}
+			if(pTick >0){
+			aPHours = (projectHour1/pTick).toFixed(4);
+			}
+			if(oTick >0){
+			aOHours = (otherHour1/oTick).toFixed(4);
+			}
+			
+		var data = google.visualization.arrayToDataTable([
+        ["Work Code", "Average Hours", { role: "style" } ],
+        ["Regular Time", aRHours, "blue"],
+        ["Weekend Time", aWHours, "red"],
+        ["Project Time", aPHours, "silver"],
+        ["Other Time", aOHours, "grey"]
+      ]);
+	
+	var options = {
+        title: "Average time worked per time code, in hours.",
+        width: 500,
+        height: 400,
+        bar: {groupWidth: "92%"},
+      };
+      var chart = new google.visualization.ColumnChart(document.getElementById("chart_div2"));
+      chart.draw(data, options);
+  }
+	</script>	
+	
+</body>
+</html>

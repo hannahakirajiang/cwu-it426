@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Number Guessing Game</title>
+<style type="text/css">
+#stage {
+    width: 300px;
+    height: 50px;
+    position: relative;
+}
+#scale {
+    width: 300px;
+    height: 50px;
+    position: absolute;
+    top: 0 px;
+    left: 0 px;
+    background-image: url(../Day%203%20-%20Random,%20Number%20Guesser/scale.png);
+}
+.arrows {
+    width: 15px;
+    height: 25px;
+    position: absolute;
+    top: 2px;
+    left: -7px;
+    background-image: url(../Day%203%20-%20Random,%20Number%20Guesser/arrow.gif);
+    /*Transition*/
+    -webkit-transition: left 0.5s ease-out 0s;
+    -moz-transition: left 0.5s ease-out 0s;
+    transition: left 0.5s ease-out 0s;
+}
+</style>
+</head>
+
+<body>
+<p id="output">I am thinking of a number between 1 and 100.</p>
+<input id="input" type="text" placeholder="Enter your guess...">
+<button id="guessIt">Guess</button>
+<script type="text/javascript">
+
+//Game variables
+var mysteryNumber = 50;
+var playersGuess = 0; //this is not a data, it is just setting it up to a number
+var guessesRemaining=10;
+var guessesMade=0;
+var gameState=""; //this is a sentence
+
+//Grab the input and output fields
+var input = document.querySelector("#input");
+var output = document.querySelector("#output");
+
+//Grab the button
+var button = document.querySelector("#guessIt");
+button.style.cursor = "pointer";
+button.addEventListener("click", clickHandler, false);
+
+function clickHandler()
+{
+	playGame();
+}
+
+function playGame()
+{
+	
+	guessesRemaining--; //guessesRemaining = guessesRemaining-1;
+	guessesMade++;
+	gameState = "That was guess #"+guessesMade+", You have "+guessesRemaining+" left."
+	playersGuess = parseInt(input.value);
+	
+	if(playersGuess > mysteryNumber)
+	{
+		output.innerHTML = "That's too high." + gameState;
+	}
+	else if(playersGuess < mysteryNumber)
+	{
+		output.innerHTML = "That's too low." + gameState;
+	}
+	else if(playersGuess === mysteryNumber) // this line is not needed but just for clarify. 
+	{
+		output.innerHTML = "You got it!";
+	}
+}
+</script>
+</body>
+</html>

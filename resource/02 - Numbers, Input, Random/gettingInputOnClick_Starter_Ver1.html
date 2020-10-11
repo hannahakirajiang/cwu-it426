@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Getting input</title>
+</head>
+
+<body>
+<input id="input" type="text" placeholder="Enter a number">
+<button id="trigger" onClick="clickHandler()">Click Here!</button>
+<div id="output">Input will appear here.</div>
+	
+<script type="text/javascript">
+
+//set up variables
+var userInput = 0 ;
+
+var myinput = document.getElementById("input");
+var myoutput = document.querySelector("#output");
+
+
+function clickHandler()
+{
+
+	userInput = parseInt(myinput.value);
+	output.innerHTML = userInput;
+}
+	
+</script>
+</body>
+</html>

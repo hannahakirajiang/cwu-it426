@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Getting Random Numbers</title>
+</head>
+
+<body>
+
+<button id="trigger">Click here for a "Random" Number</button>
+<div id="output">Random Numbers:</div>
+
+<script type="text/javascript">
+
+//Grab the output field
+
+var myoutput = document.querySelector("#output");
+
+//Grab the button
+var button =  document.querySelector("#trigger");
+button.addEventListener( "click",clickHandler,false );
+
+function clickHandler()
+{
+	
+	theRandomNumber = Math.ceil(Math.random()*100); 
+	//ask about the range
+	//theRandomNumber = Math.ceil(Math.random()*10)+30; 这将给我们带来一个数据between 10 和 40（30+10）
+	output.innerHTML += "<br>" + theRandomNumber;
+}
+	
+</script>
+</body>
+</html>

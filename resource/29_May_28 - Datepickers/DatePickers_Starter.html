@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>jQuery UI Starter Page</title>
+<!-- Load the base jquery code from the jquery Content Distribution Network (CDN) -->
+<script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous">
+</script>
+
+<!-- Load the jquery UI library from the CDN -->
+<script
+  src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+  integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+  crossorigin="anonymous">
+</script>		
+<!-- Load a basic stylesheet for structure and theme -->
+<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+</head>
+
+<body>
+<p>
+  <label for="textfield">Start Date:</label>
+  <input type="text" name="textfield" id="textfield"> 
+</p>
+<p>
+  <label for="textfield2">End Date:</label>
+  <input type="text" name="textfield2" id="textfield2">
+</p>
+<button id="daysBetween">Days Between?</button>
+<div id="answer"></div>
+	
+<script>
+	var dateStart;
+	var dateEnd;
+	const milliDays = 1000*60*60*24;	
+	$(function(){
+		$("#textfield").datepicker({
+			changeMonth:true,
+			changeYear:true,
+		});
+		$("#textfield2").datepicker({
+			changeMonth:true,
+			changeYear:true,
+		});
+	});
+	$("#daysBetween").click(function(){
+		dateStart=$("#textfield").datepicker('getDate');
+		dateEnd=$("#textfield2").datepicker('getDate');
+		$('#answer').html("The number of days between "+$("#textfield").val()+" and " +$("#textfield2").val()+" = "+Math.abs((dateStart-dateEnd)/milliDays));
+	});
+</script>
+</body>
+</html>

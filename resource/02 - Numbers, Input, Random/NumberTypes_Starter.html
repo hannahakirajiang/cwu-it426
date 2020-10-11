@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Number Types</title>
+</head>
+
+<body>
+	<div id="output">Numbers!</div>
+<script type="text/javascript">
+	var myNumber = 45.9565676543;
+	var myoutput = document.getElementById("output");
+	
+	output.innerHTML = "Number = " + Number(myNumber) ;
+
+    output.innerHTML += "<br>" + myNumber +" to an integer value = " + parseInt(myNumber);
+   
+	output.innerHTML += "<br>" + myNumber +" to a decimal value = " + parseFloat(myNumber);
+   
+	output.innerHTML += "<br>" + myNumber +" to hundredths = " + myNumber.toFixed(2);
+	
+    output.innerHTML += "<br>" + myNumber +" to 6 numeric places = " + myNumber.toPrecision(6);
+     
+	output.innerHTML += "<br>" + myNumber +" rounded up = " + Math.ceil(myNumber);
+
+	output.innerHTML += "<br>" + myNumber +" rounded down = " + Math.floor(myNumber) ;
+
+	output.innerHTML += "<br>" + myNumber +" rounded up = " + Math.round(myNumber);
+	
+	output.innerHTML += "<br>" + myNumber + " rounded to hundredths = " + Math.round(myNumber*100)/100;
+	
+
+</script>
+	
+</body>
+</html>

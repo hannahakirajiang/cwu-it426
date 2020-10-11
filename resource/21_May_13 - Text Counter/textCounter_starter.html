@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Text Counter</title>
+<style type="text/css">
+#comment_frame {
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.hide {
+    display: none;
+}
+.overAmount {
+    color: #F9080C;
+}
+.danger {
+    color: #E18A05;
+}
+.ok {
+    color: #4D9E04;
+}
+</style>
+</head>
+
+<body>
+<div id="comment_frame">
+  <fieldset> <!-- draw a box around the textarea and label -->
+    <label for="comments">Comments:</label>
+    <textarea name="comments" cols="35" rows="5" id="comments" ></textarea>
+    <span id="counter"> </span>
+  </fieldset>
+</div>
+	
+<script>	
+	var txt = document.getElementById('comments'),
+		txtCount = document.getElementById('counter'),
+		maxLetters = 100;//set this to the number of letters allowed
+	txt.setAttribute('maxlength',maxLetters);
+	txt.addEventListener("focus",updateCounter,false);
+	txt.addEventListener("input",updateCounter,false);
+	txt.addEventListener("blur",updateCounter,false);
+	
+	function hideCounter(){
+		if(txt.value.length<=maxLetters){
+			txtCount.className = "hide";//use javascript to the a class
+			
+		}
+	};
+	
+	function updateCounter(event){
+		var target = event.target;
+		var count = maxLetters-target.value.length;
+		if(count===0){
+			txtCount.className = "overAmount";
+			txtCount.innerHTML = "Maximum length reached!";
+		}
+		else if(count<= maxLetters/4){
+			txtCount.className = "danger";
+		}
+		else{
+			txtCount.className = "ok";
+		}
+	var currentCount ='<b>'+count+'<b>'+' character(s) left!';
+		if(count>=1){
+			txtCount.innerHTML=currentCount;
+		}
+	}
+</script>
+</body>
+</html>

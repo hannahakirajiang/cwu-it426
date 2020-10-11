@@ -1,0 +1,215 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Number Guessing Game</title>
+<style type="text/css">
+#stage {
+    width: 300px;
+    height: 50px;
+    position: relative;
+}
+#scale {
+    width: 300px;
+    height: 50px;
+    position: absolute;
+    top: 0 px;
+    left: 0 px;
+    background-image: url(scale.png);
+}
+.arrows {
+    width: 15px;
+    height: 25px;
+    position: absolute;
+    top: 2px;
+    left: -7px;
+    background-image: url(arrow.gif);
+    /*Transition*/
+    -webkit-transition: left 0.5s ease-out 0s;
+    -moz-transition: left 0.5s ease-out 0s;
+    transition: left 0.5s ease-out 0s;
+}
+#wrapper
+	{
+		width: 300px;
+		margin-left: auto;
+		margin-right: auto;	}
+</style>
+</head>
+
+<body>
+<div id="wrapper">
+<div id="stage">
+  <div id="scale"></div>
+  <div id="arrowLow" class="arrows"></div>
+<div id="arrowHigh" class="arrows"></div>
+</div>
+<p id="output">I am thinking of a number between 1 and 100.</p>
+<input id="input" type="text" placeholder="Enter your guess..." autocomplete="off" autofocus>
+<button id="guessIt">Guess</button>
+<button id="StartOver">Start a new game.</button>
+</div>
+<script type="text/javascript">
+
+//Game variables
+var mysteryNumber;
+var playersGuess = 0;
+var guessesRemaining=10;
+var guessesMade = 0;
+var gameState="";
+var gameWon = false;
+
+//Grab the input and output fields
+var input = document.querySelector("#input");
+var output = document.querySelector("#output");
+
+//Grab the button
+var button = document.querySelector("#guessIt");
+button.style.cursor = "pointer";
+var StartOver = document.querySelector("#StartOver");
+StartOver.style.visibility="hidden";
+	
+//Grab the arrow
+var arrowLow=document.querySelector("#arrowLow");
+	arrowLow.style.left="-8px";
+var arrowHigh=document.querySelector("#arrowHigh");
+	arrowHigh.style.left="292px";
+
+startANewGame();
+//Start a new game
+	
+function startANewGame()
+{
+	StartOver.removeEventListener("click",startANewGame,false);
+	StartOver.style.visibility="hidden";
+	window.removeEventListener("keydown",startANewGame,false);
+	button.style.visibility="visible";
+	button/addEventListener("click",clickHandler,false);
+	window.addEventListener("keydown",keydownHandler,false);
+	arrowLow.style.left="-8px";
+	arrowHigh.style.left="292px";
+	mysteryNumber = Math.ceil(Math.random()*100);
+	playersGuess = 0;
+	guessesRemaining=10;
+	guessesMade = 0;
+	gameState="";
+	gameWon = false;
+	output.innerHTML="I am thinking of a number between 1 and 100.";
+	input.style.visibility="visible";
+	//input.value="";
+	clearSetFocus();
+}
+// position the cursor
+	clearSetFocus();
+	
+function renderTheScaleLow()
+	{
+		arrowLow.style.left = (playersGuess *3 -8)+"px";
+		arrowLow.style.opacity = 1-(Math.abs((mysteryNumber-playersGuess)/100))
+	}
+function renderTheScaleHigh()
+	{
+		arrowHigh.style.left = (playersGuess *3 -8)+"px";
+		arrowHigh.style.opacity = 1-(Math.abs((mysteryNumber-playersGuess)/100))
+	}
+	
+function keydownHandler(event)
+	{
+		if(event.keyCode ===13)
+			{
+				validateInput();
+			}
+	}
+
+function clickHandler()
+{
+	validateInput();
+}
+	
+function validateInput()
+	{
+		playersGuess=input.value;
+		if(isNaN(playersGuess))
+			{
+				output.innerHTML="Please enter a number."
+			}
+		else if (playersGuess !=parseInt(playersGuess))
+			{
+				output.innerHTML="Whole numbers only, please."
+			}
+		else
+			{
+				playGame();
+			}
+	}
+
+function clearSetFocus()
+	{
+		input.value="";
+		input.focus();
+	}
+function playGame()
+{
+	guessesRemaining--;
+	guessesMade++;
+	gameState = " That was guess #" + guessesMade + ", You have " + guessesRemaining + " left.";
+	
+	
+	
+	if(playersGuess > mysteryNumber)
+	{
+		output.innerHTML = "That's too high."+ gameState;
+		clearSetFocus();
+		renderTheScaleHigh();
+		//Check for end of game
+		if (guessesRemaining < 1)
+			{
+				endGame();
+			}
+	}	
+	else if(playersGuess < mysteryNumber)
+	{
+		output.innerHTML = "That's too low." + gameState;
+		clearSetFocus();
+		renderTheScaleLow();
+		if (guessesRemaining < 1)
+			{
+				endGame();
+			}
+	}
+	else 
+	{
+		gameWon = true;
+		renderTheScaleHigh;
+		renderTheScaleLow;
+		endGame();
+	}
+}
+
+function endGame()
+	{
+		var plural = " guesses."
+		if(gameWon)
+			{
+				if(guessesMade === 1)
+				{
+					plural = " guess. That's amazing!";
+				}
+				output.innerHTML = "Yes, it's " + mysteryNumber + "<br> It only took you " + guessesMade + plural;
+			}
+		else
+			{
+				output.innerHTML = "No more guesses left!<br>The number was: "+mysteryNumber+".";
+			}
+		//disable user interface elements
+		button.removeEventListener("click",clickHandler,false);
+		button.style.visibility = "hidden"
+		window.removeEventListener("keydown",keydownHandler,false);
+		input.style.visibility="hidden";
+		StartOver.style.visibility="visible";
+		StartOver.addEventListener("click",startANewGame,false)
+		window.addEventListener("keydown",startANewGame,false);
+	}
+</script>
+</body>
+</html>

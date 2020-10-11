@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Slideshow 7 - Random</title>
+</head>
+
+<body>
+<p><img src= "picArray[0].src" alt="" name="displayIt" width="540" height="405" id="displayIt" /> </p>
+<p>
+  <label>
+    <input name="mycaption" type="text" id="mycaption" size="50" maxlength="50" />
+  </label>
+</p>
+<script language="javascript" type="text/javascript">
+
+var picArray = [];
+var index = -1;
+
+picArray[0] = new Image;
+picArray[0].src = "images/mountain1.jpg";
+picArray[0].caption = "The first mountain is added.";
+picArray[1] = new Image;
+picArray[1].src = "images/mountain2.jpg";
+picArray[1].caption = "And now for the second mountain.";
+picArray[2] = new Image;
+picArray[2].src = "images/mountain3.jpg";
+picArray[2].caption = "Guess what - another mountain.";
+picArray[3] = new Image;
+picArray[3].src = "images/mountain4.jpg";
+picArray[3].caption = "The fourth hill. How many more?";
+picArray[4] = new Image;
+picArray[4].src = "images/mountain5.jpg";
+picArray[4].caption = "Will this ever end?";
+
+
+function runit()
+{
+	
+	index = Math.floor(Math.random()*picArray.length);
+
+	document.displayIt.src = picArray[index].src;
+	document.getElementById("mycaption").value = picArray[index].caption;
+	setTimeout("runit()",1000);
+	return;
+}
+
+	runit()
+</script>
+</body>
+</html>

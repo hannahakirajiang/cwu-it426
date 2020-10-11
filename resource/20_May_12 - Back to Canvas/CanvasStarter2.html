@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Simple Canvas Commands</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+<canvas id="myCanvas" width="500" height="500" style="border:1px solid #000000;"> 
+  <!-- if canvas doesn't work show this --> Canvas is not supported. </canvas>
+<script type="text/javascript">
+	function drawIt() {
+		var canvas= document.getElementById("myCanvas");
+	 	var ctx = canvas.getContext("2d");
+  
+		//make a filled rectangle
+     	ctx.fillStyle = 'rgba(0,0,0,1)';//set color
+	 	ctx.fillRect(40,40,100,100); //draw a rectangle (x of start, y of start, x of end, y of end)
+	 	
+		//make an unfilled rectangle
+	 	ctx.strokeRect(150,40,20,50); //draw an unfilled rectangle (x of start, y of start, x of end, y of end)
+	 	
+		//make a line	
+	 	ctx.beginPath();//start shape
+	 	ctx.moveTo(100,100); //place pen (x position in canvas, y position in canvas)
+	 	ctx.lineTo(340,100); //draw line (x position in canvas, y position in canvas)
+		ctx.closePath(); //close line
+		ctx.stroke(); //display line
+		
+		//make a circle
+	 	ctx.beginPath(); //start shape
+     	ctx.fillStyle = 'rgba(256,0,0,0.7)'; //set color  
+	 	ctx.arc(230,90,50,0,Math.PI*2,false); //draw circle - Math.PI*2 is for full circle
+	 	// (x of arc, y of arc, radius of arc, start angle in radians-0 is 90 degrees right, ending angle in radians, counterclockwise?)
+	 	ctx.closePath(); //close circle
+		ctx.fill(); //fill circle
+	 	
+		//make a semi-circle
+		ctx.beginPath();
+		ctx.fillStyle = 'rgba(0,256,0,1)'; //set color  
+		ctx.arc(330,190,50,0,Math.PI,false); //drawarc
+		// (x of arc, y of arc, radius of arc, start angle in radians-0 is 90 degrees right, ending angle in radians, counterclockwise?)
+		ctx.closePath(); //close arc
+     	ctx.fill(); //fill arc
+	 	
+		//write text
+	 	var text = "Hello World!" //set text
+		ctx.fillStyle = "red";
+		ctx.font = 'italic 30px serif';//set font
+	 	//display filled text
+	 	ctx.fillText(text, 40, 30);//draw filled text at position (x position in canvas, y position in canvas)
+	 	//display unfilled text
+     	ctx.strokeText(text, 200, 200); //draw unfilled text at position (x position in canvas, y position in canvas)   
+		ctx.strokeText(text, 40, 30); //draw unfilled text at position (x position in canvas, y position in canvas)
+		
+	 	//create linear gradient
+	 	var lGrad = ctx.createLinearGradient(0,0,200,0);
+	 	//add colors
+	 	lGrad.addColorStop(0,"blue");
+	 	lGrad.addColorStop(1,"purple");
+	 	//fill gradient
+	 	ctx.fillStyle = lGrad; //set fill color
+	 	ctx.fillRect(0,350,500,500); //draw a rectangle (x of start, y of start, x of end, y of end)
+	 	
+		//create circular gradient
+	 	var cGrad = ctx.createRadialGradient(100,250,100,100,250,10);
+		//(x of start circle, y of start circle, radius of start circle, x of end circle, y of end circle, radius of end circle
+	 	cGrad.addColorStop(0,"yellow");
+		cGrad.addColorStop(1,"orange");
+	 	ctx.beginPath(); //start shape
+     	ctx.fillStyle = cGrad; //set fill color  
+	 	ctx.arc(100,250,100,0,Math.PI*2,false); //draw circle
+	 	// (x of arc, y of arc, radius of arc, start angle in radians-0 is 90 degrees right, ending angle in radians, counterclockwise?)
+	 	ctx.closePath(); //close circle
+	 	ctx.fill(); //fill circle
+ 		
+    };
+	
+drawIt();
+</script>
+</body>
+</html>

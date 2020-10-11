@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Miles - Kilometers</title>
+<style type="text/css">
+#container {
+	width: 80%;
+	margin-right: auto;
+	margin-left: auto;
+}
+#title {
+	font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: xx-large;
+	background-color: #D8D1D2;
+	text-align: center;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+#contents {
+	padding: 30px;
+}
+</style>
+</head>
+
+<body>
+<div id="container">
+  <div id="title">Miles To Kilometers (or Kilometers to Miles)</div>
+  <div id="contents">
+    <form id="form1">
+      <p>
+        <label for="myDistance">Distance in Miles or Kilometers:</label>
+        <input type="text" name="myDistance" id="myDistance" autocomplete="off">
+      </p>
+      <p>
+ <select id="selector" onChange="validateInput(this.value)">
+   <option value="0">Choose a conversion</option>
+   <option value="1.609344">Miles to Kilometers</option>
+   <option value=".62137119">Kilometers to Miles</option>
+    
+ </select>
+      </p>
+      <div id="answer"></div>
+      
+    </form>
+	  <div id="arrayDisplay">
+  </div>
+</div>
+	</div>
+<script type="text/javascript">
+//global variables
+var miles = 0;
+var kilometers = 0;
+var answerOutput = document.getElementById("answer");
+var distanceInput = document.getElementById("myDistance");
+var selection = document.getElementById("selector");
+var arrayOutput = document.getElementById("arrayDisplay");
+var userInput;
+var arrayItem;
+var temparray=[];
+    
+function validateInput(factor)
+{
+	selection.selectedIndex=null;
+    userInput = distanceInput.value;
+
+	if(isNaN(userInput))
+	{
+		answerOutput.innerHTML = "Please enter a number for the distance";
+        
+	}
+	else
+	{
+		converter(factor);
+	}
+}
+
+function converter(factor) {
+bTag = "kilometers";
+aTag = "miles";
+
+if(factor == .62137119)
+{
+	bTag = "miles";
+	aTag = "kilometers";
+}
+userInput = Number(distanceInput.value);
+distanceInput.value="";
+userOutput = userInput * factor;
+userOutput = parseInt(userOutput*100)/100;
+arrayItem = userInput + " "+aTag+"(s) equals " + userOutput +" "+ bTag+"(s)."
+temparray.push(arrayItem);
+answerOutput.innerHTML = arrayItem;
+if(temparray.length>5){
+	temparray.splice(0,1);
+}
+outputString = "<ol>";
+for (i = 0; i < temparray.length; i++) {
+    outputString += "<li>" + temparray[i] + "</li>";
+}   
+outputString+="</ol>"
+    
+arrayOutput.innerHTML = outputString;
+	
+
+};
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Roll the Dice</title>
+ <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+ <script type="text/javascript">
+    google.charts.load('current', {packages: ['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+    var timesRolled=0;
+    var stopRoll = 1000;
+    var mytimer;
+    var numberRolled1 = 0;
+    var numberRolled2 = 0
+    var numberTotal = 0;
+    var theArray = [0,0,0,0,0,0,0,0,0,0,0,0,0];
+
+	 mytimer = setInterval(drawChart, 10);
+
+      function drawChart() {         
+        numberRolled1 = Math.ceil(Math.random()*6);
+        numberRolled2 = Math.ceil(Math.random()*6);
+        numberTotal = numberRolled1+numberRolled2;
+        theArray[numberTotal]=theArray[numberTotal]+1;
+        timesRolled++;
+        document.getElementById("counter").innerHTML=timesRolled-1;
+        if (timesRolled>stopRoll){clearInterval(mytimer);}
+        // Create the data table.
+        var data = new google.visualization.arrayToDataTable([
+	       ['Number','Rolled'],
+            ['2', theArray[2]],
+            ['3', theArray[3]],
+            ['4', theArray[4]],
+            ['5', theArray[5]],
+            ['6', theArray[6]],
+            ['7', theArray[7]],
+            ['8', theArray[8]],
+            ['9', theArray[9]],
+            ['10', theArray[10]],
+            ['11', theArray[11]],
+            ['12', theArray[12]],
+        ]);
+		  
+
+        // Set chart options
+        var options = {title:'Dice Roll',
+                       width:900,
+                       height:600};
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+  </script>
+</head>
+<body>
+  <!-- Identify where the chart should be drawn. --> 
+ 
+<div id="chart_div"></div>
+<div id="counter"></div>
+</body>
+</html>

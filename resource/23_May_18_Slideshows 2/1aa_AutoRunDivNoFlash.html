@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Slideshow 1a - AutorunDiv</title>
+<style type="text/css">
+#picDiv {
+    width: 540px;
+    height: 405px;
+}
+</style>
+</head>
+
+<body>
+<div id="picDiv"><img src="images/mountain1.jpg" width="540" height="405" id="picHolder" alt=""/> </div>
+<script language="javascript" type="text/javascript">
+
+var picArray = [];
+picArray[0] = new Image;
+picArray[0].src = "images/mountain1.jpg";
+picArray[1] = new Image;
+picArray[1].src = "images/mountain2.jpg";
+picArray[2] = new Image;
+picArray[2].src = "images/mountain3.jpg";
+picArray[3] = new Image;
+picArray[3].src = "images/mountain4.jpg";
+picArray[4] = new Image;
+picArray[4].src = "images/mountain6.jpg";
+
+var index = 0;
+var picD=document.querySelector('#picDiv');
+var picShow=document.querySelector('#picHolder')
+
+function runit()
+		{
+		picShow.src=picArray[index].src;
+		index++
+		if(index==picArray.length)
+		{
+			index=0;
+		}
+		setTimeout("runit()",1000);
+		return;
+}
+
+runit();
+</script>
+</body>
+</html>

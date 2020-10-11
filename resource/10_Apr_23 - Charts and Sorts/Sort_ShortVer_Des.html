@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Simple Sort</title>
+</head>
+
+<body>
+<div id="answer"></div>
+<script>
+var a = document.getElementById("answer");
+var numbersArray = [60,50,62,58,54,54,100,40,56,34,23,12,14,10,52,10];
+	
+a.innerHTML = "Original: "+numbersArray+"<br>";
+	
+numbersArray.sort(function(num1, num2){return num1 - num2});
+a.innerHTML += "Ascending: "+numbersArray+"<br>";
+	
+numbersArray.sort(function(num1, num2){return num2 - num1});
+a.innerHTML += "Decending: "+numbersArray+"<br>";
+</script>
+	
+</body>
+</html>

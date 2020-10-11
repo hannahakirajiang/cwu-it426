@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Dice roll 1000 times</title>
+</head>
+
+<body>
+    <div id="display">Roll a pair of dice 1000 times:<br><br></div>
+    <script>
+    var theDisplay = document.getElementById("display");
+    var numberRolled1 = 0;
+    var numberRolled2 = 0
+    var numberTotal = 0;
+    var theArray = [0,0,0,0,0,0,0,0,0,0,0,0,0];
+    function rollTheDie(){
+    for (var i=0; i<1000; i++){
+        numberRolled1 = Math.ceil(Math.random()*6);
+        numberRolled2 = Math.ceil(Math.random()*6);
+        numberTotal = numberRolled1+numberRolled2;
+        theArray[numberTotal]=theArray[numberTotal]+1;}
+    
+    for (var i=2; i<13; i++)
+        {theDisplay.innerHTML += i+"--"+theArray[i]+"<br>";}
+        }
+    rollTheDie();
+    </script>
+</body>
+</html>

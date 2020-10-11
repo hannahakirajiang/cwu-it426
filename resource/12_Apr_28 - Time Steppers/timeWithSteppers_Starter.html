@@ -1,0 +1,357 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Time between times</title>
+<!-- Load the base jquery code from the jquery Content Distribution Network (CDN) --> 
+<script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous">
+</script> 
+<!-- Load the codes necessary to migrate from an earlier version (optional) --> 
+<script
+  src="https://code.jquery.com/jquery-migrate-3.1.0.js"
+  integrity="sha256-oA/lsZCgEPkbv/byAkeXSTEZTsGOPZCrtbyFBHmcGKM="
+  crossorigin="anonymous">
+</script> 
+<!-- Load the jquery UI library from the CDN --> 
+<script
+  src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+  integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+  crossorigin="anonymous">
+</script> 
+<!-- Load a basic stylesheet for structure and theme -->
+<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<style type="text/css">
+#header {
+    font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
+    font-size: xx-large;
+}
+#container {
+    margin-left: auto;
+    margin-right: auto;
+    font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
+    font-size: large;
+    margin-top: 47px;
+    width: 550px;
+    text-align: center;
+}
+</style>
+</head>
+
+<body>
+<div id="container">
+  <div id="header">Time Calculator</div>
+  <div id="myNowThen">&nbsp;</div>
+  <div id="currentDate">&nbsp;</div>
+  <div id="myclock">&nbsp;</div>
+  <div id="diffSeconds">&nbsp;</div>
+  <p>
+    <label for="month1">Month:</label>
+  </p>
+  <p>
+    <input name="month1" type="text" id="month1">
+  </p>
+  <p>
+    <label for="day1">Day:</label>
+  </p>
+  <p>
+    <input name="day1" type="text" id="day1">
+  </p>
+  <p>
+    <label for="year1">Year:</label>
+  </p>
+  <p>
+    <input name="year1" type="text" id="year1">
+  </p>
+  <p>
+    <label for="hour1">Hour:</label>
+  </p>
+  <p>
+    <input name="hour1" type="text" id="hour1">
+  </p>
+  <p>
+    <label for="minute1">Minute:</label>
+  </p>
+  <p>
+    <input name="minute1" type="text" id="minute1">
+  </p>
+</div>
+	
+<script>
+
+//set up the variables
+var clock = $("#myclock");
+var nowThen = $("#myNowThen");
+var diff = $("#diffSeconds");
+var myYear = $("#year1");
+var myMonth = $("#month1");
+var myDate = $("#day1");
+var myHour = $("#hour1");
+var myMinute = $("#minute1");
+var fullDate = $("#currentDate");
+
+//user choosen date
+var targetDate;
+//string of the month name 
+var monthName = " ";
+//correct num of days in a month
+var monthLength = 31;
+//string of day of week name (i.e. monday)
+var dayOfWeek;
+//string of 'am'or 'pm'
+var amOrPM;
+//change days nummber to a name using this array
+var weekDays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+//user input date as a string
+var targetDateString;
+//user imput time as a string
+var targetTimeString;
+
+//Get the UI - get the current date from the computers clock
+//and use it to populate the spinner					
+var ntoday= new Date();
+
+//set the parameters for eaxh spinner and initialize them to the info from ntoday
+//set up the month spinner check for max and min 
+myMonth.spinner({stop:function(event, ui) {writeNewDate()}});
+myMonth.spinner("value",ntoday.getMonth()+1);
+myMonth.spinner({spin: function( event, ui ) {
+					if (ui.value > 12) {
+						$(this).spinner("value", 1);
+						return false;
+					} else if (ui.value < 1) {
+						$(this).spinner("value", 12);
+						return false;
+						}
+					}
+				});
+	
+//set up the day spinner check for max MyDate spinner value
+myDate.spinner({ stop:function(event,ui){writeNewDate()}});
+myDate.spinner("value",ntoday.getDate());
+myDate.spinner({spin: function(event, ui) {
+					if (ui.value > monthLength) {
+						$(this).spinner("value", 1);
+						return false;
+					} else if (ui.value < 1) {
+						$(this).spinner("value", monthLength);
+						return false;
+						}
+					}
+				});
+	
+//sets up the year spinner
+myYear.spinner();
+myYear.spinner("value",ntoday.getFullYear());
+
+//sets up the hour spinner with max and min values
+myHour.spinner();
+myHour.spinner("value",ntoday.getHours());
+myHour.spinner({spin: function( event, ui ) {
+					if (ui.value > 23) {
+						$(this).spinner("value", 0);
+						return false;
+					} else if (ui.value < 0) {
+						$(this).spinner("value", 23);
+						return false;
+						}
+					}
+				});
+	
+//set up minute spinner
+myMinute.spinner();
+myMinute.spinner("value",ntoday.getMinutes());
+myMinute.spinner({spin: function( event, ui ) {
+					if (ui.value > 59) {
+						$(this).spinner("value", 0);
+						return false;
+					} else if (ui.value < 0) {
+						$(this).spinner("value", 59);
+						return false;
+						}
+					}
+				});
+	
+//start the show!
+everySecond();
+
+//
+//
+function writeNewDate()
+{
+	var monthValue = myMonth.spinner("value");
+	var yearValue = myYear.spinner("value");
+	var dateValue = myDate.spinner("value");
+	var hourValue = myHour.spinner("value");
+	var minuteValue = myMinute.spinner("value");
+	
+	switch(monthValue)
+	{
+	case 1:
+	monthName = "January";
+	monthLength = 31;
+	break;
+	case 2:
+	monthName = "February";
+	monthLength = 28;
+	if ((yearValue % 4 == 0) && ((yearValue % 100 != 0) || (yearValue % 400 == 0))) {monthLength = 29;}
+	break;
+	case 3:
+	monthName = "March";
+	monthLength = 31;
+	break;
+	case 4:
+	monthName = "April";
+	monthLength = 30;
+	break;
+	case 5:
+	monthName = "May";
+	monthLength = 31;
+	break;
+	case 6:
+	monthName = "June";
+	monthLength = 30;
+	break;
+	case 7:
+	monthName = "July";
+	monthLength = 31;
+	break;
+	case 8:
+	monthName = "August";
+	monthLength = 31;
+	break;
+	case 9:
+	monthName = "September";
+	monthLength = 30;
+	break;
+	case 10:
+	monthName = "October";
+	monthLength = 31;
+	break;
+	case 11:
+	monthName = "November";
+	monthLength = 30;
+	break;
+	case 12:
+	monthName = "December";
+	monthLength = 31;
+	break;
+	}
+	// set the correct value for the day
+	if(dateValue>monthLength){myDate.spinner("value",monthLength)}
+	
+	// get the user's slected from the spinners
+	targetDate = new Date(yearValue,(monthValue-1),dateValue);
+	
+	// get the day of the weeks name from the array
+	dayOfWeek = weekDays[targetDate.getDay()];
+	
+	// display user selected date from the screen
+	targetDateString = dayOfWeek + " - "+monthName+" "+dateValue+", "+yearValue;
+	fullDate.text(targetDateString);
+	
+	//now we caculate the time
+	var ampm = "am"
+	
+	var hourStr = String(hourValue);
+	//set 12 for midnight
+	if (hourValue>=12) {
+     ampm="pm";
+	}
+	//get rid of 24 hour time
+	if (hourValue == 0) {
+		hourStr = "12";
+	}
+	//pad minutes with two if nessesary
+	if (hourValue>=13) {
+	hourStr=String(hourValue - 12);
+	}
+	//
+	var minutes2places= String(minuteValue);
+	if (minuteValue < 10) {
+		minutes2places = "0"+ minutes2places;
+		}
+		targetTimeString = " at "+hourStr+":"+minutes2places+" " +ampm;
+	
+	//add the users time to the date display
+	fullDate.append(targetTimeString);
+}
+//end of writeNewDate()
+
+//set the interval timer so it runs automatically
+function everySecond()
+{
+	var myVar=setInterval(function(){mycalcTime()},1000);
+}
+	
+function mycalcTime()
+{
+// local variables for output calculations
+var secsLeft=0 ;
+var nyears =0;
+var ndays = 0;
+var nhours = 0;
+var nminutes = 0;
+var nsecs = 0;
+var outstr = "";
+var nowToThen = "";
+// constants for number of seconds in years, days and hours
+const YEARSECONDS = 365*24*60*60;
+const DAYSECONDS = 24*60*60;
+const HOURSECONDS = 60*60; 
+//
+writeNewDate();
+//
+ntoday = new Date();
+//
+targetDate = new Date(myYear.spinner("value"),(myMonth.spinner("value")-1),myDate.spinner("value"),myHour.spinner("value"),myMinute.spinner("value"),0,0);
+
+//Use .getTime to get the number of milliseconds since Jan. 1, 1970 to both the target
+//and the current date.  If the target date is in the past turn the calculation around.
+//Divide the calculation by 1000 to get rid of the milliseconds and just work with seconds.
+secsLeft = Math.floor((targetDate.getTime() - ntoday.getTime())/1000);
+//display the difference in seconds
+diff.text('Seconds difference: '+ Math.abs(secsLeft));
+//display the correct label
+if (secsLeft < 0){
+	nowToThen = "Time since..."
+	}else{
+		nowToThen = "Time until..."
+	}
+	nowThen.text(nowToThen);
+	//use abs to wipe out negative calculations
+	secsLeft = Math.abs(secsLeft);
+
+if (secsLeft===0){
+	clock.text("That's right now!");
+	}else{
+	//Start the calculations by taking out the years - in seconds: 365*24*60*60
+	nyears = Math.floor(secsLeft/YEARSECONDS);
+	secsLeft -= nyears*YEARSECONDS;
+	//on to days - months would be a problem as they vary in length - maybe some day...
+	ndays = Math.floor(secsLeft/DAYSECONDS);
+	secsLeft -= ndays*DAYSECONDS;
+	//now for hours
+	nhours = Math.floor(secsLeft/HOURSECONDS);
+	secsLeft -= nhours*HOURSECONDS;
+	//minutes
+	nminutes = Math.floor(secsLeft/60);
+	//seconds are just left over
+	nsecs = secsLeft - nminutes*60;
+	//assemble the output string
+	outstr = "";
+	(nyears == 1)? outstr="1 year, " : outstr = nyears+ " years, ";
+	(ndays == 1)? outstr+= " 1 day, " : outstr += ndays + " days, ";
+	(nhours == 1)? outstr += " 1 hours " : outstr += nhours + " hours, ";
+	(nminutes == 1)? outstr += " 1 minute and " : outstr += nminutes + " minutes, and ";
+	(nsecs > 1)? outstr += nsecs + " seconds." : (nsecs == 1)? outstr += " 1 second." : outstr += " no seconds.";
+	//send result to output
+	clock.text(outstr);
+	}
+}; //end mycalcTime()
+
+</script>
+</body>
+</html>

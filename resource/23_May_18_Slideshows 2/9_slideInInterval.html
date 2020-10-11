@@ -1,0 +1,95 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<meta charset="utf-8">
+<title>Slideshow 9 - Slide in on setInterval</title>
+<style>
+
+#pano{
+	position:relative;
+	z-index:0;
+	width: 7020px;
+}
+
+#panoWrapper{
+	position:relative;
+	width:540px;
+	overflow:hidden;
+	z-index:1;
+}
+
+#container{
+	position:absolute;
+	width:540px;
+	left:150px;
+	top:50px;
+	height: 405px;
+	z-index:2;
+}
+#pano img{
+	float:left;
+}
+
+</style>
+<script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous">
+</script> 
+</head> 
+<body> 
+<div id="container">
+	<div id="panoWrapper">
+    	<div id="pano"></div>
+    </div>
+    <div class="clearIt"></div>
+    </div>
+<script>
+var picArray = [];
+picArray[0] = new Image;
+picArray[0].src = "images/mountain1.jpg";
+picArray[1] = new Image;
+picArray[1].src = "images/mountain2.jpg";
+picArray[2] = new Image;
+picArray[2].src = "images/mountain3.jpg";
+picArray[3] = new Image;
+picArray[3].src = "images/mountain4.jpg";
+picArray[4] = new Image;
+picArray[4].src = "images/mountain5.jpg";
+picArray[5] = new Image;
+picArray[5].src = "images/mountain6.jpg";
+picArray[6] = new Image;
+picArray[6].src = "images/mountain7.jpg";
+picArray[7] = new Image;
+picArray[7].src = "images/mountain8.jpg";
+picArray[8] = new Image;
+picArray[8].src = "images/mountain9.jpg";
+picArray[9] = new Image;
+picArray[9].src = "images/mountain10.jpg";
+picArray[10] = new Image;
+picArray[10].src = "images/mountain11.jpg";
+picArray[11] = new Image;
+picArray[11].src = "images/mountain12.jpg";
+picArray[12] = new Image;
+picArray[12].src = "images/mountain1.jpg";
+
+	var picCounter = 0;
+	for (var i=0; i < picArray.length; i++)
+{
+	$('#pano').append( '<img src='+picArray[i].src+' width="540" height="405" alt=""/>');
+}
+	var slideshow = setInterval(function(){runit()}, 2000);
+	
+	function runit(){
+		if (picCounter <picArray.length-1)
+		{$('#pano').animate({left:"-=540px"},500);
+		picCounter +=1;
+		};
+		if (picCounter == picArray.length-1)
+			{$('#pano').animate({left:"0px"},0);
+			picCounter = 0;}
+	};
+
+</script>
+</body>
+</html>

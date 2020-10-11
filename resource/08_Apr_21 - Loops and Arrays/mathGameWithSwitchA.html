@@ -1,0 +1,141 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Math Game</title>
+<style type="text/css">
+#wrapper {
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+}
+#title {
+	background-color: #F4FB29;
+	text-align: center;
+	font-size: xx-large;
+	padding-top: 12px;
+	padding-bottom: 14px;
+}
+#problem {
+	background-color: #D4D5F7;
+}
+#answer {
+	background-color: #84F8B9;
+	text-align: center;
+	clear: left;
+	font-size: xx-large;
+}
+.displayNumber {
+	width: 40%;
+	background-color: #DAE1F8;
+	float: left;
+	text-align: center;
+	font-size: 85px;
+	padding-top: 24px;
+	padding-bottom: 24px;
+}
+#symbol {
+	width: 20%;
+	float: left;
+	text-align: center;
+	font-size: 86px;
+	padding-top: 24px;
+	padding-bottom: 24px;
+}
+#myAnswer {
+ 	font-size: xx-large;
+	text-align: center;
+}
+	#Enter {
+	font-size: x-large;
+}
+</style>
+</head>
+
+<body>
+<div id="wrapper">
+  <div id="title">Math Game</div>
+  <div id="problem">
+    <div id="numberwrapper">
+      <div id="displayNumber1" class="displayNumber">6</div>
+      <div id="symbol">+</div>
+      <div id="displayNumber2" class="displayNumber" >5</div>
+    </div>
+  </div>
+  <div id="answer">
+    <label for="inputAnswer">Your Answer:</label>
+    <input type="text" name="inputAnswer" id="inputAnswer">
+    <input type="button" name="Enter" id="Enter" value="Check your answer">
+  </div>
+  <div id="results"></div>
+</div>
+<script type="text/javascript">
+	var firstNumber = 0;
+	var secondNumber = 0;
+	var myAnswer = 0;
+	var correctAnswer = 0
+	var theOperation=""
+	
+	var displayOne = document.getElementById("displayNumber1");
+	var displayTwo = document.getElementById("displayNumber2");
+	var thebutton = document.getElementById("Enter");
+	var theAnswer = document.getElementById("inputAnswer");
+	var theResults = document.getElementById("results");
+	
+	var theSymbol = document.getElementById("symbol");
+	
+	
+	generateProblem();
+	
+	thebutton.addEventListener("click",checkAnswer,false);
+	function generateProblem(){
+		firstNumber = Math.floor(Math.random()*10);
+		
+		secondNumber = Math.floor(Math.random()*10);
+		getOperation();
+	}
+	function checkAnswer(){
+		//correctAnswer = firstNumber + secondNumber; MOVE THIS
+		myAnswer = parseInt(theAnswer.value);
+		if (myAnswer == correctAnswer){
+			theResults.innerHTML="You got it!"
+			generateProblem();
+		}
+		else{
+			theResults.innerHTML = "Try again!"
+		}
+	}
+	function getOperation(){
+		var operation = Math.ceil(Math.random()*4);
+		switch(operation){
+			case 1:
+				displayOne.innerHTML=firstNumber;
+				displayTwo.innerHTML=secondNumber;
+				correctAnswer=firstNumber+secondNumber;
+				theSymbol.innerHTML = "+";
+				break;
+			case 2:
+				displayOne.innerHTML=firstNumber+secondNumber;
+				displayTwo.innerHTML=secondNumber;
+				correctAnswer = firstNumber;
+				theSymbol.innerHTML = "-";
+				break;
+			case 3:
+				displayOne.innerHTML=firstNumber;
+				displayTwo.innerHTML=secondNumber;
+				correctAnswer=firstNumber*secondNumber;
+				theSymbol.innerHTML = "*";
+				break;
+			case 4:
+				displayOne.innerHTML=firstNumber*secondNumber;
+				displayTwo.innerHTML=secondNumber;
+				correctAnswer = firstNumber;
+				theSymbol.innerHTML = "/";
+				break;
+				
+		}
+	}
+	
+	</script>
+</body>
+</html>

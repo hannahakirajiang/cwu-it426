@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Miles-Kilometers</title>
+<style type="text/css">
+#container {
+	width: 80%;
+	margin-right: auto;
+	margin-left: auto;
+}
+#title {
+	font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: xx-large;
+	background-color: #D8D1D2;
+	text-align: center;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+#contents {
+	padding: 30px;
+}
+</style>
+</head>
+
+<body>
+<div id="container">
+  <div id="title">Miles to Kilometers and Back</div>
+  <div id="contents">
+
+      <p>
+        <label for="myDistance">Distance:</label>
+        <input type="text" name="myDistance" id="myDistance" autocomplete="off">
+      </p>
+      <p>
+        <input type="submit" name="button1" id="button1" value="Convert to Miles" onClick = "MtoK()"/>
+  <input type="submit" name="button2" id="button2" value="Convert to Kilometers" onClick = "KtoM()"/>
+      </p>
+      <div id="answer"></div>
+      <p>&nbsp;</p>
+   
+  </div>
+</div>
+<script type="text/javascript">
+//global variables
+var miles = 0;
+var kilo = 0;
+var output = document.getElementById("answer");
+var input = document.getElementById("myDistance")
+
+
+function MtoK() {
+miles = Number(input.value);
+kilo = miles * 1.609344;
+kilo = parseInt(kilo*100)/100;
+output.innerHTML = miles + " mile(s) equals " + kilo + " kilometer(s)."
+}
+
+function KtoM() {
+kilo = Number(input.value);
+miles  = kilo * .62137119;
+miles = parseInt(miles*100)/100;
+output.innerHTML = kilo + " kilometer(s) equals " + miles + " mile(s)."
+}
+</script>
+</body>
+</html>

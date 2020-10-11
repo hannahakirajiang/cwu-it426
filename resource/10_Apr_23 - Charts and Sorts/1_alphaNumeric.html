@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Simple Sort</title>
+
+</head>
+
+<body>
+<div id="answer"></div>
+
+<script>
+var a = document.getElementById("answer");
+var wordsArray = ["Now","Is","The","Time","To","Learn","About","Sorts","In","Javascript"];
+
+a.innerHTML="Original: "+wordsArray+"<br>";
+	
+wordsArray.sort(); 
+a.innerHTML+= "Ascending: "+wordsArray+"<br>";
+	
+wordsArray.reverse();
+a.innerHTML+= "Decending: "+wordsArray+"<br>";
+</script>
+
+</body>
+</html>

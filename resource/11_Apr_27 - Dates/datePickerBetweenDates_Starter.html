@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>DatePicker Between Dates</title>
+<!-- Load the base jquery code from the jquery Content Distribution Network (CDN) --> 
+<script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous">
+</script> 
+<!-- Load the codes necessary to migrate from an earlier version (optional) --> 
+<script
+  src="https://code.jquery.com/jquery-migrate-3.1.0.js"
+  integrity="sha256-oA/lsZCgEPkbv/byAkeXSTEZTsGOPZCrtbyFBHmcGKM="
+  crossorigin="anonymous">
+</script> 
+<!-- Load the jquery UI library from the CDN --> 
+<script
+  src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+  integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+  crossorigin="anonymous">
+</script> 
+<!-- Load a basic stylesheet for structure and theme -->
+<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+</head>
+
+<body>
+<p>Date:
+  <input type="text" id="datepicker0" autocomplete="off" placeholder="click to pick a date">
+</p>
+<p> </p>
+<p>Date:
+  <input type="text" id="datepicker1" autocomplete="off" placeholder="click to pick a date">
+</p>
+<p> </p>
+<div id="diffAnswer">Pick two dates.</div>
+<script>
+$(function(){
+	$("#datepicker0").datepicker({
+		changeMonth:true,
+		changeYear:true,
+		onSelect:function(){
+			calcDays();
+		}
+	});
+		$("#datepicker1").datepicker({
+		changeMonth:true,
+		changeYear:true,
+		onSelect:function(){
+			calcDays();
+		}
+	});
+});
+
+function calcDays(){
+	var date1 = new Date();
+	var date2 = new Date();
+	const MILLIDAYS = 1000*60*60*24;
+	
+	date1 = new Date($("#datepicker0").val());
+	date2 = new Date($("#datepicker1").val());
+	var diff = date1 - date2;
+	
+	if (diff){
+	$('#diffAnswer').html("Between "+date1.toDateString()+" and "+date2.toDateString()+" there are "+Math.abs(parseInt(diff/MILLIDAYS))+" days.");
+	}
+}
+	
+</script>
+</body>
+</html>

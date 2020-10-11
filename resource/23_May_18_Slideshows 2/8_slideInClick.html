@@ -1,0 +1,81 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<meta charset="utf-8">
+<title>Slideshow 8 - Slide in on Click</title>
+<style>
+
+#pano{
+	position:relative;
+	z-index:0;
+	width: 8500px;
+}
+
+#panoWrapper{
+	position:relative;
+	width:540px;
+	overflow:hidden;
+	z-index:1;
+}
+
+#container{
+	position:absolute;
+	width:540px;
+	left:150px;
+	top:50px;
+	height: 405px;
+	z-index:2;
+}
+#pano img{
+	float:left;
+}
+
+.clearIt {
+	clear: left;
+}
+</style>
+
+<script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous">
+</script> 
+</head> 
+<body> 
+<div id="container">
+	<div id="panoWrapper">
+    	<div id="pano">
+        	<img src="images/mountain1.jpg" width="540" height="405" alt=""/>
+            <img src="images/mountain2.jpg" width="540" height="405" alt=""/>
+            <img src="images/mountain3.jpg" width="540" height="405" alt=""/>
+            <img src="images/mountain4.jpg" width="540" height="405" alt=""/>
+            <img src="images/mountain5.jpg" width="540" height="405" alt=""/>
+            <img src="images/mountain6.jpg" width="540" height="405" alt=""/>
+            <img src="images/mountain7.jpg" width="540" height="405" alt=""/>
+            <img src="images/mountain8.jpg" width="540" height="405" alt=""/>
+            <img src="images/mountain9.jpg" width="540" height="405" alt=""/>
+            <img src="images/mountain10.jpg" width="540" height="405" alt=""/>
+            <img src="images/mountain11.jpg" width="540" height="405" alt=""/>
+            <img src="images/mountain12.jpg" width="540" height="405" alt=""/>
+            <img src="images/mountain1.jpg" width="540" height="405" alt=""/>
+        </div>
+    </div>
+    <div class="clearIt">Click on the Picture!</div>
+    </div>
+    <script>
+	$(document).ready(function(){
+	var numClick = 0;
+	
+	$("#pano").click(function(){
+		if (numClick <12)
+		{$(this).animate({left:"-=540px"},500);
+		numClick +=1;
+		};
+		if (numClick == 12)
+			{$(this).animate({left:"0px"},0);
+			numClick = 0;}
+	});
+});
+</script>
+</body>
+</html>

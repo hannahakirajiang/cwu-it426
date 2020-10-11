@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Bird Constructor</title>
+</head>
+
+<body>
+<div id="answer"></div>
+<script>
+var a = document.getElementById("answer");
+
+// Bird constructor
+function Bird(name, breed, age) {
+	this.name = name;
+	this.breed = breed;
+	this.age = age;
+}
+	
+// Construct Objects
+var tweety = new Bird("Tweety", "Parakeet", 4);
+var amazon = new Bird("Amazon", "Parrot", 20);
+var spot = new Bird("Gizmo","Canary", 6);
+var birds = [tweety, amazon, spot];
+//console.log(birds);
+	
+//Output the Array
+for (var i=0; i < birds.length; i++) {
+	var age = "young";
+	if (birds[i].age > 5){
+		age = "middle aged";}
+	 if (birds[i].age >10){
+		age = "old"}
+	a.innerHTML +="Bird: " + birds[i].name + " is a " + age+ " " + birds[i].breed+"<br>";
+}
+
+// sort by name
+function sortByName(bird1, bird2) {
+	if(bird1.name > bird2.name) { return 1;}
+	else if (bird1.name === bird2.name){ return 0;}
+	else { return -1;}
+}
+	
+// Output Sorted Array	
+a.innerHTML +="<br><h3>Birds sorted by name</h3>"
+birds.sort(sortByName);
+for (var i=0; i<birds.length; i++){
+	a.innerHTML += i+1+": "+birds[i].name + " the "+birds[i].breed+"<br>";
+}
+
+</script>
+</body>
+</html>

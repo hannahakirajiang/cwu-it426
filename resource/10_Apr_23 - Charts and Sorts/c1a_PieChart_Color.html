@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+ 
+<head>
+<meta charset="utf-8">
+  
+   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+   <script type="text/javascript">
+    
+      google.charts.load('current', {'packages':['corechart']});
+
+      google.charts.setOnLoadCallback(drawChart);
+   
+      function drawChart() {
+    
+        var data = new google.visualization.arrayToDataTable([
+        ['Month','average Prrecipitation'],
+        ['January', 1.19],
+        ['February', 0.82],
+        ['March', 0.68],
+        ['April', 0.61],
+        ['May', 0.65],
+		['June', 0.59],
+		['July', 0.33],
+		['August', 0.24],
+		['September', 0.45],
+		['October', 0.60],
+		['November', 1.24],
+		['December', 1.56]
+        ]);
+      
+        var options = {'title':'Average Precipitation in Inches',
+                       'width':900,
+                       'height':600,
+					   'is3D':true,
+					   'slices':{
+						   0:{color:'red'},
+						   3:{color:'#6865df'}
+					   }
+					  
+					  };
+       
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+ 
+</head>
+ 
+<body>
+    <!--Div that will hold the pie chart--> 
+   
+<div id="chart_div"></div>
+ 
+</body>
+</html>

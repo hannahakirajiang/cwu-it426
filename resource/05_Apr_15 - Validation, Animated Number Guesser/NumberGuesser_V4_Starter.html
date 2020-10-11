@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Number Guessing Game</title>
+<style type="text/css">
+#stage {
+    width: 300px;
+    height: 50px;
+    position: relative;
+}
+#scale {
+    width: 300px;
+    height: 50px;
+    position: absolute;
+    top: 0 px;
+    left: 0 px;
+    background-image: url(scale.png);
+}
+.arrows {
+    width: 15px;
+    height: 25px;
+    position: absolute;
+    top: 2px;
+    left: -7px;
+    background-image: url(arrow.gif);
+    /*Transition*/
+    -webkit-transition: left 0.5s ease-out 0s;
+    -moz-transition: left 0.5s ease-out 0s;
+    transition: left 0.5s ease-out 0s;
+}
+</style>
+</head>
+
+<body>
+<div id="stage">
+  <div id="scale"></div>
+  <div id="arrow" class="arrows"></div>
+</div>
+<p id="output">I am thinking of a number between 1 and 100.</p>
+<input id="input" type="text" placeholder="Enter your guess..." autofocus>
+<button id="guessIt">Guess</button>
+<script type="text/javascript">
+
+//Game variables
+var mysteryNumber = 50;
+var playersGuess = 0;
+var guessesRemaining=10;
+var guessesMade = 0;
+var gameState="";
+var gameWon = false;
+
+//Grab the input and output fields
+var input = document.querySelector("#input");
+var output = document.querySelector("#output");
+
+//Grab the button
+var button = document.querySelector("#guessIt");
+button.style.cursor = "pointer";
+button.addEventListener("click", clickHandler, false);
+window.addEventListener("keydown", keydownHandler, false);
+	
+//Grab the arrow
+var arrow=document.querySelector("#arrow");
+	
+function renderTheScale()
+	{
+		arrow.style.left = (playersGuess *3 -8)+"px";
+	}
+
+function clickHandler()
+{
+	playGame();
+}
+
+function playGame()
+{
+	guessesRemaining--;
+	guessesMade++;
+	gameState = " That was guess #" + guessesMade + ", You have " + guessesRemaining + " left.";
+	
+	playersGuess = parseInt(input.value);
+	
+	if(playersGuess > mysteryNumber)
+	{
+		output.innerHTML = "That's too high."+ gameState;
+		//Check for end of game
+		if (guessesRemaining < 1)
+			{
+				endGame();
+			}
+	}	
+	else if(playersGuess < mysteryNumber)
+	{
+		output.innerHTML = "That's too low." + gameState;
+		if (guessesRemaining < 1)
+			{
+				endGame();
+			}
+	}
+	else if(playersGuess === mysteryNumber)
+	{
+		gameWon = true;
+		endGame();
+	}
+}
+
+function endGame()
+	{
+		if(gameWon)
+			{
+				output.innerHTML = "Yes, it's " + mysteryNumber + "<br> It only took you " + guessesMade + "guesses.";
+			}
+		else
+			{
+				output.innerHTML = "No more guesses left!<br>The number was: "+mysteryNumber+".";
+			}
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+ <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+ <script type="text/javascript">
+    google.charts.load('current', {packages: ['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() 
+	 {		 
+		// define the array - note the square braces
+		var petsGraph = "[['Terrier',5],['Manx',10],['Rat',5],['Parakeet',6],['Tetra',12],['Snake',4]]";  
+		
+        var data = new google.visualization.DataTable();
+		// manually add column names
+        data.addColumn('string', 'Breed');
+        data.addColumn('number', 'In Stock');
+		// read and evaluate the array as columns
+        data.addRows(eval(petsGraph));
+        
+        // Set chart options
+        var options = {'title':'Pet Store Inventory by Breed',
+                       'width':600,
+                       'height':600};
+
+        // Setup and draw the chart, adding in the options.
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+</head>
+
+<body>
+<!--Div that will hold the pie chart-->
+<div id="chart_div"></div>
+</body>
+</html>

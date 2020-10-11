@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+ <script type="text/javascript">
+    google.charts.load('current', {packages: ['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+	 
+	 // This array is created with individual objects
+	 // so the 'eval()' function cannot work with it.
+	 // The data itself is in the wrong format! 
+	 // Each object contains three elements - a pie graph only uses two.
+	   var pets = [{type:"Mammal",breed:"Dog",amount:5},{type:"Mammal",breed:"Cat",amount:10},{type:"Mammal",breed:"Rat",amount:5},{type:"Bird",breed:"Parakeet",amount:6},{type:"Fish",breed:"Tetra",amount:12},{type:"Reptile",breed:"Snake",amount:4}];
+	 // It needs to be formatted like this:
+	 // var pets = "[['Dog',5],['Cat',10],['Rat',5],['Parakeet',6],['Tetra',12],        ['Snake',4]]"; 
+      
+	  function drawChart() {
+		// Convert each object in the array into a form that 'eval()' can use.
+		// Create a new array
+		var petString = "["
+		// parse each object into a form 'eval()' can use:
+		for (var i=0; i<pets.length; i++)
+			{
+				petString += "['"+pets[i].breed+"',"+pets[i].amount+"],";
+			}
+		//add the square brace and get rid of the last comma!
+		  petString=petString.substring(0,petString.length-1)+"]";
+		  
+        var data = new google.visualization.DataTable();
+		//manually add the columns
+        data.addColumn('string', 'Breed');
+        data.addColumn('number', 'In stock');
+		// read and evaluate the array as columns
+        data.addRows(eval(petString));
+		// Set chart options
+        var options = {'title':'Inventory by Breed',
+                       'width':900,
+                       'height':600};
+		// Setup and draw the chart, adding in the options.
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+</head>
+
+<body>
+<div id="chart_div"></div>
+</body>
+</html>

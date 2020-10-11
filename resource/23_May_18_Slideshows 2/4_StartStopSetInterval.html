@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Slideshow 4 - setInterval and clearInterval</title>
+<!-- If script is here it won't run correctly
+	 as button1 cannot be found... -->
+</head>
+
+<body>
+<p><img src= "images/mountain1.jpg" alt="" name="displayIt" width="540" height="405" id="displayIt" />
+</p>
+<p>
+  <input type="button"  id="button1" value="Stop the show!" onClick="toggleTheShow()">
+</p>
+<script language="javascript" type="text/javascript">
+
+var picArray = [];
+picArray[0] = new Image;
+picArray[0].src = "images/mountain1.jpg";
+picArray[1] = new Image;
+picArray[1].src = "images/mountain2.jpg";
+picArray[2] = new Image;
+picArray[2].src = "images/mountain3.jpg";
+picArray[3] = new Image;
+picArray[3].src = "images/mountain4.jpg";
+picArray[4] = new Image;
+picArray[4].src = "images/mountain5.jpg";
+
+var index = 0;
+var slideshow = setInterval(function(){runit()}, 1000);
+var running = true;
+var startStop = document.getElementById("button1");
+
+function runit()
+{
+	document.displayIt.src = picArray[index].src;
+	index++
+	if(index==picArray.length)
+	{
+		index=0;
+	}	
+	return;
+}
+ 
+function toggleTheShow(){
+ 	if (running)
+    {
+		clearInterval(slideshow);
+		running = false;
+		startStop.value = "Start the Show"
+	}
+	else
+	{
+		slideshow = setInterval(function(){runit()}, 1000);
+		running = true;
+		startStop.value = "Stop the Show"
+	}
+ }
+
+</script>
+</body>
+</html>

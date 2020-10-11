@@ -1,0 +1,381 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Pet Shop</title>
+<style type="text/css">
+#container {
+    width: 90%;
+    margin-top: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    min-width: 700px;
+}
+#title {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    background-color: #D3D6D7;
+}
+#currentInventory {
+    padding-left: px;
+    background-color: #E3E1E1;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 70%;
+    float: left;
+}
+#columnWrapper {
+}
+#title h5 {
+    font-style: italic;
+}
+#addPet {
+    width: 30%;
+    float: left;
+    background-color: #F0EFEF;
+}
+.clearIt {
+    clear: left;
+}
+#answer {
+    padding-left: 15px;
+}
+#inventoryTitle {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 10px;
+}
+#inputs {
+    padding-left: 10px;
+}
+.tabs {
+    width: 25%;
+    float: left;
+}
+.tabtitle {
+    background-color: #D3D6F5;
+    width: 25%;
+    float: left;
+    font-weight: bold;
+}
+#chart_div {
+    float: left;
+}
+#chart_div2 {
+    float: left;
+}
+</style>
+</head>
+
+<body>
+<div id="container">
+  <div id="title">
+    <h2>BestPets</h2>
+    <h5>&quot;Only the best pets are at BestPets&quot;</h5>
+  </div>
+  <div id="columnWrapper">
+    <div id="addPet"> &nbsp;&nbsp;Add a new pet:
+      <div id="inputs">
+        <form id="inputForm">
+          <p>
+            <label>Type: </label>
+            <br>
+            <select id="dropType">
+              <option>Select Type</option>
+              <option value="Mammal">Mammal</option>
+              <option value="Bird">Bird</option>
+              <option value="Reptile">Reptile</option>
+              <option value="Fish">Fish</option>
+            </select>
+            <br>
+            <br>
+            <label>Breed: </label>
+            <br>
+            <input name="inputBreed" type="text" id="inputBreed">
+            <br>
+            <br>
+            <label>Total number in stock: </label>
+            <br>
+            <input name="inputQuantity" type="text" id="inputQuantity">
+          </p>
+          <p>
+            <input type="button" name="button" id="button" value="Submit" onClick="getFromForm()">
+          </p>
+        </form>
+      </div>
+    </div>
+    <div id="currentInventory">
+      <div id="sortButtons">&nbsp;&nbsp;Sort by?
+        <input name="Type" type="button" id="Type" title="Type" value="Type" onClick="typeSort()">
+        <input name="Breed" type="button" id="Breed" title="Breed" value="Breed" onClick="breedSort()">
+        <input name="Amount" type="button" id="Amount" title="Amount" value="Amount" onClick="amountSort()">
+        <br>
+        <br>
+        <div id="inventoryTitle"></div>
+        <div id="answer"></div>
+      </div>
+      <div class="clearIt"></div>
+    </div>
+    <div class="clearIt"></div>
+  </div>
+</div>
+<div class="clearIt"></div>
+<div id="chart_div"></div>
+<div id="chart_div2"></div>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> 
+  <script type="text/javascript">
+    google.charts.load('current', {packages: ['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+      //set up and draw two charts
+      function drawChart() {
+		// create Inventory by Breed
+		// Convert the array created by program into a form the chart can use
+		var petString = "[";
+		for (var i=0; i<pets.length; i++)
+		  {petString += "['"+pets[i].breed+"',"+pets[i].amount+"],";}
+		petString = petString.substring(0, petString.length-1)+"]";
+		// create the data for the chart
+		var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Inventory by Breed');
+        data.addColumn('number', 'In stock:');
+		data.addRows(eval(petString));
+
+        // set chart options
+        var options = {'title':'Inventory by Breed',
+                       'width':400,
+                       'height':300};
+
+        // new chart object - draw the chart
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+		
+		// now create second chart - Inventory by Type
+		// set up variables
+		var typeString = "";
+		var countMammal = 0;
+		var countReptile = 0;
+		var countBird = 0;
+		var countFish = 0;
+		// loop through pets array
+		for (var i=0; i<pets.length; i++)
+		{ 	  
+		 switch(pets[i].type)
+		 {
+		  case "Mammal":
+		  	countMammal++;
+			break;
+		  case "Reptile":
+		  	countReptile++;
+			break;
+		  case "Bird":
+		  	countBird++;
+		  	break;
+		  case "Fish":
+		  	countFish++;
+		  }
+		}
+		var typeString="[['Mammals',"+countMammal+"],['Birds',"+countBird+"],['Reptiles',"+countReptile+"],['Fish',"+countFish+"]]";
+
+		// create data
+  		var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Inventory by Breed');
+        data.addColumn('number', 'In stock:');
+        data.addRows(eval(typeString));
+		
+        // chart options
+        var options = {'title':'Inventory by Type',
+                       'width':400,
+                       'height':300};
+
+        // draw the second chart
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div2'));
+        chart.draw(data, options);	
+      }
+
+
+// declare variables
+// answer is div that holds the list
+var a = document.getElementById("answer");
+// the array of all pets
+var pets = [];
+// get the control that has mammals, birds, etc, 
+var selectType = document.getElementById('dropType');
+// get the textbox for breed input
+var breedText = document.getElementById('inputBreed');
+// get the textbox for amount
+var amountText = document.getElementById('inputQuantity');
+// sortBy holds the corrent sort
+var sortBy = "Type"
+// 
+iTitle=document.getElementById('inventoryTitle');
+// 
+iTitle.innerHTML="Current Inventory (unsorted):";
+
+// constructor
+function Pet(type, breed, amount) 
+	  {	
+		this.type = type;
+		this.breed = breed;
+		this.amount = amount;
+	  }
+
+// 
+function getFromForm()
+	  	{    
+		  var formType = dropType.value;
+		  // get the breed and convert the first letter
+		  var formBreed=breedText.value.substr(0,1).toUpperCase()+breedText.value.substr(1).toLowerCase();
+		  // get the amount and make sure it is a number
+		  var formAmount = Number(amountText.value);
+		  // check to see if the breed already exists, if it does erase it!
+		  for (var i=0; i<pets.length; i++)
+			{
+			if((pets[i].breed == formBreed) && (pets[i].type == formType))
+			{
+			pets.splice(i,1);
+			}
+		}
+			// if the new amount is not 0, then add the breed into the main array
+			if (formAmount !=0)
+			{
+				var newPet = new Pet(formType,formBreed,formAmount);
+				pets.push(newPet);
+				// Sort the array by Type, but do breed first
+    			pets.sort(sortByBreed)
+				pets.sort(sortByType);
+  
+			}
+			// clear the form
+			selectType.options[0].selected = true;
+			breedText.value = "";
+			amountText.value = "";
+			// displays the current inventory
+			displayList();
+			// draw the charts
+			drawChart();
+		}
+
+function typeSort()
+	  {
+		sortBy="Type";
+		iTitle.innerHTML="Current Inventory sorted by Type:"
+		pets.sort(sortByBreed);
+		pets.sort(sortByType);
+		displayList();
+	  }
+function breedSort()
+	  {
+		sortBy="Breed";
+		iTitle.innerHTML="Current Inventory sorted by Breed:"
+		pets.sort(sortByType);
+		pets.sort(sortByBreed);
+		displayList();
+	  }
+function amountSort()
+	  {
+		sortBy="Amount";
+		iTitle.innerHTML="Current Inventory sorted by Quantity:"
+    	pets.sort(sortByType);
+		pets.sort(sortByAmount);	
+		displayList();
+	  }
+
+// sort by type
+function sortByType(pet1, pet2) 
+	  {
+		if(pet1.type > pet2.type) { return 1;}
+		else if (pet1.type === pet2.type){ return 0;}
+		else { return -1;}
+	  }
+// sort by breed
+function sortByBreed(pet1, pet2) 
+	  {
+		if(pet1.breed > pet2.breed) { return 1;}
+		else if (pet1.breed === pet2.breed){ return 0;}
+		else { return -1;}
+	  }
+// sort by quantity
+function sortByAmount(pet1, pet2) 
+	  {
+		if(pet1.amount > pet2.amount) { return 1;}
+		else if (pet1.amount === pet2.amount){ return 0;}
+		else { return -1;}
+	  }
+
+function displayList()
+	  // Displays the current inventory list
+	  {
+		a.innerHTML="";
+		switch (sortBy)
+		{
+			case "Type":
+			a.innerHTML +='<div class=tabtitle>Type</div><div class=tabtitle>Breed</div><div class=tabtitle>Amount</div><div class=clearIt><br>';
+			break;
+				
+			case "Breed":
+			a.innerHTML +='<div class=tabtitle>Breed</div><div class=tabtitle>Type</div><div class=tabtitle>Amount</div><div class=clearIt><br>';
+			break;
+				
+			case "Amount":
+			a.innerHTML +='<div class=tabtitle>Amount</div><div class=tabtitle>Type</div><div class=tabtitle>Breed</div><div class=clearIt><br>';
+			break;
+		}
+		for (var i=0; i<pets.length; i++)
+		{
+		switch (sortBy)
+			{
+			case "Type":
+            { 
+            a.innerHTML +='<div class=tabs>'+pets[i].type +'</div><div class=tabs>'+pets[i].breed +'</div><div class=tabs>'+pets[i].amount +'</div><div class=tabs><input type="button" name='+i+' value="Delete All" onClick="deleteAll(name)"><input type="button" name='+i+' value="Delete One" onClick="deleteOne(name)"></div><div class=clearIt>';
+			// Sort the array
+            pets.sort(sortByType);
+			}
+    		break;
+					
+			case "Breed":
+            {
+			a.innerHTML +='<div class=tabs>'+pets[i].breed +'</div><div class=tabs>'+pets[i].type +'</div><div class=tabs>'+pets[i].amount +'</div><div class=tabs><input type="button" name='+i+' value="Delete All" onClick="deleteAll(name)"><input type="button" name='+i+' value="Delete One" onClick="deleteOne(name)"><div class=clearIt>';
+			// Sort the array
+            pets.sort(sortByBreed);
+			}
+			break;
+		
+			case "Amount":
+            {
+			a.innerHTML +='<div class=tabs>'+pets[i].amount +'</div><div class=tabs>'+pets[i].type +'</div><div class=tabs>'+pets[i].breed +'</div><div class=tabs><input type="button" name='+i+' value="Delete All" onClick="deleteAll(name)"><input type="button" name='+i+' value="Delete One" onClick="deleteOne(name)"><div class=clearIt>';
+			// Sort the array
+            pets.sort(sortByAmount);
+			}
+			break;
+			}
+		}
+	  }
+function deleteAll(which)
+	  {
+    	pets.splice(which,1);
+    	typeSort();
+    	displayList();
+    	drawChart();
+	  }
+function deleteOne(which){
+    if(pets[which].amount >1)
+	{
+    	pets[which].amount = pets[which].amount-1;
+		//
+    	//amountSort();
+    	displayList();
+    	drawChart();
+	}
+    else 
+	{
+		deleteAll(which);
+	}
+}
+
+</script>
+</body>
+</html>

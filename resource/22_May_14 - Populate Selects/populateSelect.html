@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Populate Selects</title>
+</head>
+
+<body>
+<label for ="Main">Select Main:</label>
+<select id="Main" onChange="PopulateSecondary()">
+  <option value="0">Choose Item</option>
+  <option value="1">First</option>
+  <option value="2">Second</option>
+  <option value="3">Third</option>
+  <option value="4">Fourth</option>
+</select>
+<br>
+<br>
+<br>
+<label for="Secondary">Select Secondary:</label>
+<select name="Secondary" disabled="disabled" id="Secondary" onChange="GetFromSecondary()">
+  <option value = "0">Select Secondary:</option>
+</select>
+<br>
+<br>
+<br>
+<div id="currentSelections"></div>
+<script type="text/javascript">
+var myMain = document.getElementById("Main")
+var mySecondary = document.getElementById("Secondary");
+var output = document.getElementById("currentSelections");
+var valueFromMain = 0;
+var secondaryArray = []
+	
+	function PopulateSecondary(){
+		
+		//first clear out mySecondary:
+			for (var i=mySecondary.options.length-1; i>=1; i--)
+	{
+			mySecondary.remove(i);
+	}
+
+		//get choice from myMain
+		valueFromMain = myMain.value;
+		
+		//var secondaryArray=[];
+		
+		switch(valueFromMain){
+			case "1":
+				secondaryArray=[{name:"a",value:1},{name:"b",value:2},{name:"c",value:3}];
+				break;
+			case "2":
+				secondaryArray=[{name:"d",value:4},{name:"e",value:5},{name:"f",value:6}];
+				break;
+			case "3":
+				secondaryArray=[{name:"g",value:7},{name:"h",value:8},{name:"i",value:9}];
+				break;
+			case "4":
+				secondaryArray=[{name:"j",value:10},{name:"k",value:11},{name:"l",value:12},{name:"m",value:13},{name:"n",value:14}];
+				break;
+		}
+		
+	for(var i=0; i<secondaryArray.length;i++)
+	{
+	//populate second drop down
+		var dropItem = document.createElement("option");
+		dropItem.textContent = secondaryArray[i].name;
+		dropItem.value = secondaryArray[i].value;
+		mySecondary.appendChild(dropItem);
+	}
+		mySecondary.disabled = false;
+	}
+
+function GetFromSecondary(){
+	 var theOptionText = myMain.options[myMain.selectedIndex].text+" "+mySecondary.options[mySecondary.selectedIndex].text;
+	output.innerHTML=theOptionText;
+	
+}
+	</script>
+</body>
+</html>
